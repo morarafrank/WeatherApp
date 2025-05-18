@@ -1,7 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.compose.plugin)
+    alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -56,4 +60,52 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Coroutines
+//    implementation (libs.kotlinx.coroutines.core)
+//    implementation (libs.kotlinx.coroutines.android)
+//    implementation (libs.kotlinx.coroutines.play.services)
+
+    // Hilt
+    implementation (libs.hilt.android)
+    ksp (libs.hilt.android.compiler)
+    ksp (libs.androidx.hilt.compiler)
+    implementation (libs.androidx.hilt.navigation.compose)
+
+    // Retrofit
+    implementation(libs.retrofit)
+    // OkHttp
+    implementation (libs.okhttp)
+    implementation (libs.logging.interceptor)
+    implementation(libs.retrofit2.kotlin.coroutines.adapter)
+
+    // JSON Parsing
+    implementation (libs.gson)
+    implementation (libs.converter.gson)
+
+    // Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // JSON Parsing
+    implementation (libs.gson)
+    implementation (libs.converter.gson)
+
+    //    Moshi
+    implementation (libs.squareup.moshi.kotlin)
+    implementation (libs.converter.moshi)
+
+    // Coil
+    implementation (libs.coil.compose)
+
+//    // Room
+    implementation (libs.androidx.room.runtime)
+    implementation (libs.androidx.room.ktx)
+    ksp (libs.room.compiler)
+    annotationProcessor (libs.room.compiler)
+
+    // Shared Preferences
+//    implementation (libs.androidx.preference.ktx)
+    implementation(libs.androidx.security.crypto)
+
+
 }
