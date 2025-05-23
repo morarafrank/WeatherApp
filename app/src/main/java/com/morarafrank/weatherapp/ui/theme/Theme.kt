@@ -10,6 +10,18 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import com.morarafrank.weatherapp.R
+
+//val fontFamily = FontFamily(
+//    Font(R.font.dm_sans_regular),
+////    Font(R.font.dm_sans_bold),
+////    Font(R.font.dm_sans_medium),
+////    Font(R.font.dm_sans_light),
+////    Font(R.font.dm_sans_semibold),
+//
+//)
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -46,7 +58,8 @@ fun WeatherAppTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
+//        darkTheme -> DarkColorScheme
+        darkTheme -> LightColorScheme
         else -> LightColorScheme
     }
 

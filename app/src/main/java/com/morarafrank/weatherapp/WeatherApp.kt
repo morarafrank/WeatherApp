@@ -12,7 +12,4 @@ class WeatherApp: Application(){
 
         WeatherSharedPrefs.initSharedPrefs(this)
     }
-    init {
-
-    }
 }

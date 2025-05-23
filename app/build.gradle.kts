@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose.plugin)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -61,15 +62,21 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //Navigation Compose
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
     // Coroutines
-//    implementation (libs.kotlinx.coroutines.core)
-//    implementation (libs.kotlinx.coroutines.android)
-//    implementation (libs.kotlinx.coroutines.play.services)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.kotlinx.coroutines.play.services)
 
     // Hilt
     implementation (libs.hilt.android)
-    ksp (libs.hilt.android.compiler)
-    ksp (libs.androidx.hilt.compiler)
+    kapt(libs.hilt.android.compiler)
+    kapt(libs.androidx.hilt.compiler)
+//    ksp (libs.hilt.android.compiler)
+//    ksp (libs.androidx.hilt.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
 
     // Retrofit
@@ -106,6 +113,20 @@ dependencies {
     // Shared Preferences
 //    implementation (libs.androidx.preference.ktx)
     implementation(libs.androidx.security.crypto)
+
+
+    // ViewModel
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    // ViewModel utilities for Compose
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    // LiveData
+    implementation (libs.androidx.lifecycle.livedata.ktx)
+
+    // Saved state module for ViewModel
+    implementation (libs.androidx.lifecycle.viewmodel.savedstate)
+
+    // Annotation processor
+    ksp (libs.androidx.lifecycle.compiler)
 
 
 }
