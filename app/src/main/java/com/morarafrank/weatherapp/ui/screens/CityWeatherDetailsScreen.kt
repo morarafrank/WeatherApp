@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
@@ -35,6 +36,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.morarafrank.weatherapp.R
 import kotlin.time.Duration.Companion.days
 
@@ -74,12 +76,7 @@ fun CityWeatherDetailsScreen(modifier: Modifier = Modifier) {
     )
 }
 
-//@Preview
-@Composable
-private fun PrevCityWeatherDetailsScreen() {
-    CityWeatherDetailsScreen()
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     city: String = "Nairobi",
@@ -94,7 +91,11 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFEAF6FF))
-            .padding(24.dp),
+            .padding(
+                top = 24.dp,
+                start = 8.dp,
+                end = 8.dp
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -103,8 +104,9 @@ fun HomeScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "Weather",
-                fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+                "WeatherApp",
+                fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+                fontSize = 20.sp
             )
 
             IconButton(onClick = onSearchClick) {
@@ -114,7 +116,11 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(text = city)
+        Text(
+            text = city,
+            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+            fontSize = 18.sp
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -125,21 +131,36 @@ fun HomeScreen(
             modifier = Modifier.size(64.dp)
         )
 
-        Text(text = "$temp°C")
-        Text(text = "Sunny • Feels like $feelsLike°C •")
+        Text(
+            text = "$temp°C",
+            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+            fontSize = 12.sp
+        )
+        Text(
+            text = "Sunny • Feels like $feelsLike°C •",
+            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+            fontSize = 12.sp
+        )
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(text = " Humidity: $humidity%")
+        Text(
+            text = " Humidity: $humidity%",
+            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+            fontSize = 12.sp
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = "Last updated: $lastUpdated",
-            color = Color.Gray
+            color = Color.Gray,
+            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+            fontSize = 12.sp
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val days: List<String> = listOf("Sun","Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+        val days: List<String> = listOf("Sun","Mon", "Tue")
+        val days1: List<String> = listOf("Wed","Thu", "Fri")
         val temps: List<Int> = listOf(26, 24, 25, 22, 27, 22, 25)
 
 
@@ -153,11 +174,25 @@ fun HomeScreen(
                 )
             }
         }
+        LazyRow(
+            modifier = modifier.fillMaxWidth()
+        ) {
+            items(days1){
+                ForecastCard(
+                    day = it,
+                    temp = temps[days.indexOf(it)]
+                )
+            }
+        }
+        ForecastCard(
+            day = "Sat",
+            temp = 22
+        )
 
     }
 }
 
-//@Preview
+@Preview
 @Composable
 private fun PrevHome() {
     HomeScreen(
@@ -184,7 +219,11 @@ fun ForecastCard(day: String, temp: Int) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(day)
+            Text(
+                day,
+                fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+                fontSize = 12.sp
+            )
             Spacer(Modifier.height(4.dp))
             Icon(
                 Icons.Default.Star,
@@ -192,7 +231,11 @@ fun ForecastCard(day: String, temp: Int) {
                 tint = Color.Yellow
             )
             Spacer(Modifier.height(4.dp))
-            Text("$temp°C")
+            Text(
+                "$temp°C",
+                fontFamily = FontFamily(Font(R.font.dm_sans_light)),
+                fontSize = 12.sp
+                )
         }
     }
 }

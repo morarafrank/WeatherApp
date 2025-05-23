@@ -6,25 +6,46 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.morarafrank.weatherapp.R
 
 val fontFamily = FontFamily(
-//    Font(R.font.dm_sans_regular),
-//    Font(R.font.dm_sans_bold),
-//    Font(R.font.dm_sans_medium),
-//    Font(R.font.dm_sans_light),
-//    Font(R.font.dm_sans_semibold),
+    Font(R.font.dm_sans_regular),
+    Font(R.font.dm_sans_bold),
+    Font(R.font.dm_sans_medium),
+    Font(R.font.dm_sans_light),
 
 )
+val regularFont = FontFamily(Font(R.font.dm_sans_regular))
+val boldFont = FontFamily(Font(R.font.dm_sans_bold))
+val mediumFont = FontFamily(Font(R.font.dm_sans_medium))
+val lightFont = FontFamily(Font(R.font.dm_sans_light))
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = fontFamily,
+        fontFamily = boldFont,
         fontWeight = FontWeight.Normal,
-        fontSize = 20.sp,
+        fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
+    ),
+
+    bodyMedium = TextStyle(
+        fontFamily = mediumFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.25.sp
+    ),
+
+    bodySmall = TextStyle(
+        fontFamily = regularFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.4.sp
     )
+
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
