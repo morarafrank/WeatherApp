@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,6 +10,11 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
+
+val apiKey: String = project.rootProject.file("local.properties")
+    .inputStream()
+    .use { Properties().apply { load(it) } }
+    .getProperty("OPENWEATHER_API_KEY") ?: ""
 
 android {
     namespace = "com.morarafrank.weatherapp"
@@ -21,6 +28,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OPENWEATHER_API_KEY", "\"$apiKey\"")
     }
 
     buildTypes {
@@ -41,7 +50,11 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
+
+
+
 }
 
 dependencies {
@@ -81,6 +94,8 @@ dependencies {
 
     // Retrofit
     implementation(libs.retrofit)
+    implementation(libs.retrofit2.converter.gson)
+
     // OkHttp
     implementation (libs.okhttp)
     implementation (libs.logging.interceptor)

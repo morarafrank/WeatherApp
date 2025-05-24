@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.morarafrank.weatherapp.data.remote.WeatherService
 import com.morarafrank.weatherapp.utils.Constants
+import com.morarafrank.weatherapp.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +15,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -34,17 +36,23 @@ object AppModule {
     }
 
     // Room Database
+    @Provides
+    fun provideDatabase(@ApplicationContext context: Context): androidx.room.RoomDatabase {
+        return androidx.room.Room.databaseBuilder(
+            context,
+            androidx.room.RoomDatabase::class.java,
+            Constants.DATABASE_NAME
+        ).fallbackToDestructiveMigration().build()
+    }
+
 
     // Daos
+
+
 
     //Repos
 
     // Viewmodel
-
-    // Weather Service
-    @Provides
-    fun provideWeatherService(retrofit: Retrofit): WeatherService =
-        retrofit.create(WeatherService::class.java)
 
     // Base url
     @Provides
@@ -80,23 +88,61 @@ object AppModule {
     }
 
    // Retrofit
+//    @Provides
+//    fun provideRetrofit(
+//        okHttpClient: OkHttpClient,
+//        gsonConverterFactory: GsonConverterFactory
+//    ): Retrofit {
+//        val contentType = "application/json".toMediaType()
+//        val json = Json {
+//            ignoreUnknownKeys = true
+//            isLenient = true
+//        }
+//        return Retrofit.Builder()
+////            .addConverterFactory(json.asConverterFactory(contentType))
+//            .addConverterFactory(gsonConverterFactory)
+//            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+//            .client(okHttpClient)
+//            .baseUrl(Constants.BASE_URL)
+//            .build()
+//    }
+
     @Provides
+    @Singleton
+    fun provideJson(): Json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .build()
+
+//    @Provides
+//    @Singleton
+//    fun provideKotlinxSerializationConverterFactory(json: Json): Converter.Factory {
+//        val contentType = "application/json".toMediaType()
+//        return json.asConverterFactory(contentType)
+//    }
+
+    @Provides
+    @Singleton
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
-        gsonConverterFactory: GsonConverterFactory
+        converterFactory: Converter.Factory
     ): Retrofit {
-        val contentType = "application/json".toMediaType()
-        val json = Json {
-            ignoreUnknownKeys = true
-            isLenient = true
-        }
         return Retrofit.Builder()
-//            .addConverterFactory(json.asConverterFactory(contentType))
-            .addConverterFactory(gsonConverterFactory)
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .baseUrl(BASE_URL)
+            .addConverterFactory(converterFactory)
             .client(okHttpClient)
-            .baseUrl(Constants.BASE_URL)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherService(retrofit: Retrofit): WeatherService {
+        return retrofit.create(WeatherService::class.java)
     }
 
 }

@@ -149,7 +149,7 @@ fun SearchCityScreen(
 }
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 private fun PrevSearchScreen() {
 
