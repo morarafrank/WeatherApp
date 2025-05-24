@@ -3,6 +3,7 @@ package com.morarafrank.weatherapp.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -119,7 +120,7 @@ fun HomeScreen(
         Text(
             text = city,
             fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-            fontSize = 18.sp
+            fontSize = 20.sp
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -157,37 +158,31 @@ fun HomeScreen(
             fontSize = 12.sp
         )
 
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Next 5 Days forecast:",
+            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+            fontSize = 14.sp
+        )
+
         Spacer(modifier = Modifier.height(24.dp))
 
-        val days: List<String> = listOf("Sun","Mon", "Tue")
-        val days1: List<String> = listOf("Wed","Thu", "Fri")
-        val temps: List<Int> = listOf(26, 24, 25, 22, 27, 22, 25)
+        val days: List<String> = listOf("Mon", "Tue", "Wed", "Thu", "Fri")
+        val temps: List<Int> = listOf(26, 24, 25, 22, 27)
 
 
-        LazyRow(
-            modifier = modifier.fillMaxWidth()
+        FlowRow(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(days){
+            days.forEachIndexed { index, day ->
                 ForecastCard(
-                    day = it,
-                    temp = temps[days.indexOf(it)]
+                    day = day,
+                    temp = temps[index]
                 )
             }
         }
-        LazyRow(
-            modifier = modifier.fillMaxWidth()
-        ) {
-            items(days1){
-                ForecastCard(
-                    day = it,
-                    temp = temps[days.indexOf(it)]
-                )
-            }
-        }
-        ForecastCard(
-            day = "Sat",
-            temp = 22
-        )
 
     }
 }
@@ -205,7 +200,7 @@ fun ForecastCard(day: String, temp: Int) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
-            .padding(4.dp)
+            .padding(8.dp)
             .size(80.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.White,
