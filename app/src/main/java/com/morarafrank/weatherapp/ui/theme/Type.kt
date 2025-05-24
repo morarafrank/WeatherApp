@@ -22,24 +22,30 @@ val lightFont = FontFamily(Font(R.font.dm_sans_light))
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = boldFont,
+    bodySmall = TextStyle(
+        fontFamily = regularFont,
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.4.sp
     ),
 
     bodyMedium = TextStyle(
         fontFamily = mediumFont,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
-        lineHeight = 20.sp,
+        lineHeight = 16.sp,
         letterSpacing = 0.25.sp
     ),
-
-    bodySmall = TextStyle(
-        fontFamily = regularFont,
+    bodyLarge = TextStyle(
+        fontFamily = boldFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 20.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = lightFont,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
         lineHeight = 16.sp,

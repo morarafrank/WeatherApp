@@ -187,7 +187,7 @@ fun HomeScreen(
     }
 }
 
-@Preview
+//@Preview
 @Composable
 private fun PrevHome() {
     HomeScreen(
