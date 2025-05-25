@@ -2,7 +2,12 @@ package com.morarafrank.weatherapp.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.morarafrank.weatherapp.data.local.WeatherDatabase
+import com.morarafrank.weatherapp.data.local.forecast.ForecastDao
+import com.morarafrank.weatherapp.data.local.weather.WeatherDao
 import com.morarafrank.weatherapp.data.remote.WeatherService
 import com.morarafrank.weatherapp.utils.Constants
 import com.morarafrank.weatherapp.utils.Constants.BASE_URL
@@ -36,19 +41,45 @@ object AppModule {
     }
 
     // Room Database
+//    @Provides
+//    @Singleton
+//    fun provideDatabase(@ApplicationContext context: Context): androidx.room.RoomDatabase {
+//        return Room.databaseBuilder(
+//                context,
+//                WeatherDatabase::class.java,
+//                Constants.DATABASE_NAME
+//            ).fallbackToDestructiveMigration(false).build()
+//    }
+
     @Provides
-    fun provideDatabase(@ApplicationContext context: Context): androidx.room.RoomDatabase {
-        return androidx.room.Room.databaseBuilder(
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): WeatherDatabase {
+        return Room.databaseBuilder(
             context,
-            androidx.room.RoomDatabase::class.java,
+            WeatherDatabase::class.java,
             Constants.DATABASE_NAME
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration(false).build()
     }
 
 
+    @Provides
+    @Singleton
+    fun provideConverterFactory(): Converter.Factory {
+        return GsonConverterFactory.create()
+    }
+
     // Daos
+    @Provides
+    @Singleton
+    fun provideWeatherDao(appDatabase: WeatherDatabase): WeatherDao {
+        return appDatabase.weatherDao()
+    }
 
-
+    @Provides
+    @Singleton
+    fun provideForecastDao(appDatabase: WeatherDatabase): ForecastDao {
+        return appDatabase.forecastDao()
+    }
 
     //Repos
 
@@ -87,26 +118,6 @@ object AppModule {
         )
     }
 
-   // Retrofit
-//    @Provides
-//    fun provideRetrofit(
-//        okHttpClient: OkHttpClient,
-//        gsonConverterFactory: GsonConverterFactory
-//    ): Retrofit {
-//        val contentType = "application/json".toMediaType()
-//        val json = Json {
-//            ignoreUnknownKeys = true
-//            isLenient = true
-//        }
-//        return Retrofit.Builder()
-////            .addConverterFactory(json.asConverterFactory(contentType))
-//            .addConverterFactory(gsonConverterFactory)
-//            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-//            .client(okHttpClient)
-//            .baseUrl(Constants.BASE_URL)
-//            .build()
-//    }
-
     @Provides
     @Singleton
     fun provideJson(): Json = Json {
@@ -114,10 +125,6 @@ object AppModule {
         isLenient = true
     }
 
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
-        .build()
 
 //    @Provides
 //    @Singleton

@@ -12,7 +12,7 @@ class GetWeatherFromLocalUseCase @Inject constructor(
 //        return weatherRepository.getLocalWeatherByCityName(cityName)
 //    }
 
-    suspend operator fun invoke(): List<LocalWeather> {
-        return weatherRepository.getAllLocalWeather()
-    }
+//    suspend operator fun invoke(): List<LocalWeather> {
+//        return weatherRepository.getAllLocalWeather()
+//    }
 }

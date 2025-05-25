@@ -39,8 +39,8 @@ class WeatherAppViewModel @Inject constructor(
 
     fun getCachedWeather() {
         viewModelScope.launch {
-            val cached = weatherRepository.getCachedWeather()
-            _localWeatherList.value = cached
+//            val cached = weatherRepository.getCachedWeather()
+//            _localWeatherList.value = cached
         }
     }
 

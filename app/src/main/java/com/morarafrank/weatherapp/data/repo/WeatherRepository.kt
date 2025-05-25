@@ -8,6 +8,8 @@ import com.morarafrank.weatherapp.data.remote.WeatherService
 import com.morarafrank.weatherapp.domain.mappers.toLocalWeatherEntity
 import com.morarafrank.weatherapp.domain.mappers.toWeatherResponse
 import com.morarafrank.weatherapp.domain.model.WeatherResponse
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 
@@ -35,17 +37,20 @@ class WeatherRepository @Inject constructor(
         } catch (e: Exception) {
 
             // On error, try to fetch cached entity from Room
-            val cached = weatherDao.getAllLocalWeather().firstOrNull { it.cityName == city }
-                ?: throw e
+            val cachedList = weatherDao.getAllLocalWeather().first()
+            val cached = cachedList.firstOrNull { it.cityName.equals(city, ignoreCase = true) }
+            if (cached == null) {
+                throw e
+            }
 
             // Convert cached Room entity back to API response format
             cached.toWeatherResponse()
         }
     }
 
-    suspend fun getAllLocalWeather(): List<LocalWeather> {
-        return weatherDao.getAllLocalWeather()
-    }
+//    suspend fun getAllLocalWeather(): List<LocalWeather> {
+//        return weatherDao.getAllLocalWeather()
+//    }
 
     suspend fun getLocalWeatherByCityName(cityName: String): LocalWeather? {
         return weatherDao.getLocalWeatherByCityName(cityName)
@@ -56,9 +61,9 @@ class WeatherRepository @Inject constructor(
     }
 
 
-    suspend fun getCachedWeather(): List<LocalWeather> {
-        return weatherDao.getAllLocalWeather()
-    }
+//    suspend fun getCachedWeather(): List<LocalWeather> {
+//        return weatherDao.getAllLocalWeather()
+//    }
 
 
 

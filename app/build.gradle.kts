@@ -86,10 +86,10 @@ dependencies {
 
     // Hilt
     implementation (libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-    kapt(libs.androidx.hilt.compiler)
-//    ksp (libs.hilt.android.compiler)
-//    ksp (libs.androidx.hilt.compiler)
+//    kapt(libs.hilt.android.compiler)
+//    kapt(libs.androidx.hilt.compiler)
+    ksp (libs.hilt.android.compiler)
+    ksp (libs.androidx.hilt.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
 
     // Retrofit

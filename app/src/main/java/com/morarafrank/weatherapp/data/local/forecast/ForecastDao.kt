@@ -17,5 +17,5 @@ interface ForecastDao {
     suspend fun deleteForecast(forecast: LocalForecast)
 
     @Query("SELECT * FROM localforecast")
-    suspend fun getForecastFromLocal(): Flow<List<LocalForecast>>
+    fun getForecastFromLocal(): Flow<List<LocalForecast>>
 }
