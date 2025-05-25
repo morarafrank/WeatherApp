@@ -108,10 +108,6 @@ dependencies {
     // Kotlin Serialization
     implementation(libs.kotlinx.serialization.json)
 
-    // JSON Parsing
-    implementation (libs.gson)
-    implementation (libs.converter.gson)
-
     //    Moshi
     implementation (libs.squareup.moshi.kotlin)
     implementation (libs.converter.moshi)
@@ -139,6 +135,9 @@ dependencies {
 
     // Saved state module for ViewModel
     implementation (libs.androidx.lifecycle.viewmodel.savedstate)
+
+    implementation(libs.androidx.lifecycle.runtime.ktx.v262)
+
 
     // Annotation processor
     ksp (libs.androidx.lifecycle.compiler)

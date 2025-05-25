@@ -19,6 +19,7 @@ interface WeatherDao{
     @Query("SELECT * FROM localweather")
     suspend fun getAllLocalWeather(): List<LocalWeather>
 
-    @Query("SELECT * FROM localweather WHERE cityName = :cityName LIMIT 1")
+    @Query("SELECT * FROM localweather WHERE cityName = :cityName COLLATE NOCASE LIMIT 1")
     suspend fun getLocalWeatherByCityName(cityName: String): LocalWeather?
+
 }

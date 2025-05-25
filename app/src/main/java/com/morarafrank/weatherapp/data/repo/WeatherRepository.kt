@@ -56,8 +56,6 @@ class WeatherRepository @Inject constructor(
     }
 
 
-
-
     suspend fun getCachedWeather(): List<LocalWeather> {
         return weatherDao.getAllLocalWeather()
     }
