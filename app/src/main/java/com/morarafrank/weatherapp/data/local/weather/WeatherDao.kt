@@ -17,5 +17,8 @@ interface WeatherDao{
     suspend fun deleteWeather(weather: LocalWeather)
 
     @Query("SELECT * FROM localweather")
-    suspend fun getWeather(): Flow<List<LocalWeather>>
+    suspend fun getAllLocalWeather(): List<LocalWeather>
+
+    @Query("SELECT * FROM localweather WHERE cityName = :cityName LIMIT 1")
+    suspend fun getLocalWeatherByCityName(cityName: String): LocalWeather?
 }
