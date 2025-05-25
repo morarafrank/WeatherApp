@@ -43,8 +43,8 @@ import com.morarafrank.weatherapp.ui.theme.WeatherAppTheme
 @Composable
 fun SearchCityScreen(
     modifier: Modifier = Modifier,
-    onCitySelected: (String) -> Unit = {},
-    onBackPressed: () -> Unit = {}
+//    onCitySelected: (String) -> Unit,
+    navigateBack: () -> Unit
 ) {
     var query by remember { mutableStateOf("") }
     val cities = listOf("Nairobi", "New York", "Tokyo", "Cairo", "Lagos")
@@ -55,7 +55,7 @@ fun SearchCityScreen(
             TopAppBar(
                 title = { },
                 navigationIcon = {
-                    IconButton(onClick = onBackPressed) {
+                    IconButton(onClick = navigateBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back"
@@ -118,7 +118,9 @@ fun SearchCityScreen(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clickable { onCitySelected(city) }
+                                    .clickable {
+//                                        onCitySelected(city)
+                                    }
                             )
                             Divider()
                         }
@@ -154,6 +156,9 @@ fun SearchCityScreen(
 private fun PrevSearchScreen() {
 
     WeatherAppTheme {
-        SearchCityScreen()
+        SearchCityScreen(
+//            onCitySelected = {},
+            navigateBack = {}
+        )
     }
 }

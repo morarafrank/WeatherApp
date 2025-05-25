@@ -11,81 +11,31 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.morarafrank.weatherapp.R
-import kotlin.time.Duration.Companion.days
+import com.morarafrank.weatherapp.ui.screens.composables.ForecastCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CityWeatherDetailsScreen(modifier: Modifier = Modifier) {
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "City Weather Details",
-                    )
-                },
-            )
-        },
-        content = {
-            Column(
-                modifier = modifier
-                    .padding(it)
-            ){
-
-                Row(
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalArrangement = androidx.compose.foundation.layout.Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-
-                ) {
-
-                }
-            }
-        },
-        bottomBar = {}
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HomeScreen(
-    city: String = "Nairobi",
-    temp: Int = 26,
-    feelsLike: Int = 27,
-    humidity: Int = 60,
-    lastUpdated: String = "Today, 3:20 PM",
-    onSearchClick: () -> Unit,
+fun WeatherDetailsScreen(
+    navigateToSearch: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -110,7 +60,7 @@ fun HomeScreen(
                 fontSize = 20.sp
             )
 
-            IconButton(onClick = onSearchClick) {
+            IconButton(onClick = navigateToSearch) {
                 Icon(Icons.Default.Search, contentDescription = "Search")
             }
         }
@@ -118,7 +68,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = city,
+            text = "Nairobi",
             fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
             fontSize = 20.sp
         )
@@ -133,26 +83,26 @@ fun HomeScreen(
         )
 
         Text(
-            text = "$temp°C",
+            text = "25°C",
             fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
             fontSize = 12.sp
         )
         Text(
-            text = "Sunny • Feels like $feelsLike°C •",
+            text = "Sunny • Feels like $27°C •",
             fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
             fontSize = 12.sp
         )
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
-            text = " Humidity: $humidity%",
+            text = " Humidity: 37%",
             fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
             fontSize = 12.sp
         )
 
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "Last updated: $lastUpdated",
+            text = "Last updated: 10:30 AM",
             color = Color.Gray,
             fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
             fontSize = 12.sp
@@ -190,48 +140,9 @@ fun HomeScreen(
 //@Preview
 @Composable
 private fun PrevHome() {
-    HomeScreen(
-        onSearchClick = {}
+    WeatherDetailsScreen(
+        navigateToSearch = {}
     )
 }
 
-@Composable
-fun ForecastCard(day: String, temp: Int) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .padding(8.dp)
-            .size(80.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White,
-//            contentColor = Color.Black
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(4.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                day,
-                fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-                fontSize = 12.sp
-            )
-            Spacer(Modifier.height(4.dp))
-            Icon(
-                Icons.Default.Star,
-                contentDescription = null,
-                tint = Color.Yellow
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                "$temp°C",
-                fontFamily = FontFamily(Font(R.font.dm_sans_light)),
-                fontSize = 12.sp
-                )
-        }
-    }
-}
 

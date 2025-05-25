@@ -14,7 +14,7 @@ import com.morarafrank.weatherapp.utils.Converters
     entities = [LocalWeather::class, LocalForecast::class],
     version = 1
 )
-@TypeConverters(Converters::class)
+//@TypeConverters(Converters::class)
 abstract class WeatherDatabase : RoomDatabase() {
     abstract fun weatherDao(): WeatherDao
     abstract fun forecastDao(): ForecastDao
