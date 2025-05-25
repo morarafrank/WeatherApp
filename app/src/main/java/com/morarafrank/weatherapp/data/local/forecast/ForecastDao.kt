@@ -13,9 +13,11 @@ interface ForecastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addForecast(forecast: LocalForecast)
 
-    @Delete
-    suspend fun deleteForecast(forecast: LocalForecast)
+    // Delete all forecasts
+    @Query("DELETE FROM localforecast")
+    suspend fun deleteAllForecasts()
 
-    @Query("SELECT * FROM localforecast")
-    fun getForecastFromLocal(): Flow<List<LocalForecast>>
+    // select all forecasts for a city with cityname
+    @Query("SELECT * FROM localforecast WHERE city = :cityName")
+    fun getForecastFromLocal(cityName: String): Flow<List<LocalForecast>>
 }

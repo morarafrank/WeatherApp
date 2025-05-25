@@ -2,18 +2,12 @@ package com.morarafrank.weatherapp.data.local.forecast
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.morarafrank.weatherapp.domain.model.Clouds
-import com.morarafrank.weatherapp.domain.model.MainForecast
-import com.morarafrank.weatherapp.domain.model.RemoteWeather
-import com.morarafrank.weatherapp.domain.model.Wind
+import com.morarafrank.weatherapp.domain.model.City
+import com.morarafrank.weatherapp.domain.model.ForecastItem
 
 @Entity(tableName = "localforecast")
 data class LocalForecast(
-    @PrimaryKey val id: Int = 0,
-    val dt: Long,
-    val main: MainForecast,
-    val weather: List<RemoteWeather>,
-    val clouds: Clouds,
-    val wind: Wind,
-    val dt_txt: String
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val city: City,
+    val forecasts: List<ForecastItem>
 )

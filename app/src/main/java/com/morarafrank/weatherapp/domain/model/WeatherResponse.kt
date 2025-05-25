@@ -2,7 +2,7 @@ package com.morarafrank.weatherapp.domain.model
 
 data class WeatherResponse(
     val coord: Coord,
-    val weather: List<RemoteWeather>,
+    val weather: RemoteWeather,
     val base: String,
     val main: MainWeather,
     val visibility: Int,

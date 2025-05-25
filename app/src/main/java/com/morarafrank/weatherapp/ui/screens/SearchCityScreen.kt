@@ -37,18 +37,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.morarafrank.weatherapp.ui.WeatherAppViewModel
 import com.morarafrank.weatherapp.ui.theme.WeatherAppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchCityScreen(
     modifier: Modifier = Modifier,
-//    onCitySelected: (String) -> Unit,
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    viewModel: WeatherAppViewModel = hiltViewModel()
 ) {
-    var query by remember { mutableStateOf("") }
-    val cities = listOf("Nairobi", "New York", "Tokyo", "Cairo", "Lagos")
-    val filtered = cities.filter { it.contains(query, ignoreCase = true) }
+    val query by viewModel.query
+    val filtered by viewModel.filteredCities
 
     Scaffold(
         topBar = {
@@ -74,7 +75,7 @@ fun SearchCityScreen(
 
                 OutlinedTextField(
                     value = query,
-                    onValueChange = { query = it },
+                    onValueChange = viewModel::onQueryChanged,
                     label = {
                         Text(
                             text = "Search city",
@@ -119,7 +120,9 @@ fun SearchCityScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-//                                        onCitySelected(city)
+
+                                       viewModel.onCitySelected(city)
+                                        navigateBack()
                                     }
                             )
                             Divider()
@@ -129,7 +132,6 @@ fun SearchCityScreen(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                // Simulated footer info
                 Text(
                     text = "Last updated: 5 mins ago",
                     style = MaterialTheme.typography.labelSmall,

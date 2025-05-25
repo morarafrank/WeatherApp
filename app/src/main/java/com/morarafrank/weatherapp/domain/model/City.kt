@@ -5,6 +5,7 @@ data class City(
     val name: String,
     val coord: Coord,
     val country: String,
+    val population: Long,
     val timezone: Int,
     val sunrise: Long,
     val sunset: Long

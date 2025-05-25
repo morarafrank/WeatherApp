@@ -1,12 +1,16 @@
 package com.morarafrank.weatherapp.data.repo
 
+import androidx.compose.runtime.toMutableStateList
 import com.morarafrank.weatherapp.data.local.forecast.ForecastDao
 import com.morarafrank.weatherapp.data.local.forecast.LocalForecast
 import com.morarafrank.weatherapp.data.local.weather.LocalWeather
 import com.morarafrank.weatherapp.data.local.weather.WeatherDao
 import com.morarafrank.weatherapp.data.remote.WeatherService
+import com.morarafrank.weatherapp.domain.mappers.toLocalForecast
 import com.morarafrank.weatherapp.domain.mappers.toLocalWeatherEntity
 import com.morarafrank.weatherapp.domain.mappers.toWeatherResponse
+import com.morarafrank.weatherapp.domain.model.ForecastItem
+import com.morarafrank.weatherapp.domain.model.ForecastResponse
 import com.morarafrank.weatherapp.domain.model.WeatherResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -32,7 +36,7 @@ class WeatherRepository @Inject constructor(
             weatherDao.insertWeather(localWeather)
 
             // Return weather from API response
-            response
+            return response
 
         } catch (e: Exception) {
 
@@ -71,17 +75,36 @@ class WeatherRepository @Inject constructor(
 
     /**Forecast **/
 
-    suspend fun getFiveDayForecastFromRemoteSource(city: String) =
-        weatherRemoteDataSource.getFiveDayForecast(city)
+//    suspend fun getFiveDayForecastFromRemoteSource(city: String) =
+//        weatherRemoteDataSource.getFiveDayForecast(city)
 
-    suspend fun saveForecastToLocal(forecast: LocalForecast) {
-        forecastDao.addForecast(forecast)
+    suspend fun getFiveDayForecastFromRemoteSource(city: String): List<ForecastItem> {
+        return try {
+            val response = weatherRemoteDataSource.getFiveDayForecast(city)
+
+            val limitedForecastItems = response.list.take(6)
+
+            // Map response to LocalForecast with limited forecasts and save to room
+            val localForecast = LocalForecast(
+                city = response.city,
+                forecasts = limitedForecastItems
+            )
+
+            forecastDao.addForecast(localForecast)
+
+            limitedForecastItems
+        } catch (e: Exception) {
+            // Log or rethrow
+            throw e
+        }
     }
 
-    suspend fun deleteForecastFromLocal(forecast: LocalForecast) {
-        forecastDao.deleteForecast(forecast)
+
+    suspend fun deleteAllForecastsFromLocal() {
+        forecastDao.deleteAllForecasts()
     }
 
-    suspend fun getForecastFromLocal() = forecastDao.getForecastFromLocal()
+    fun getForecastsFromLocal(cityName: String)
+    = forecastDao.getForecastFromLocal(cityName)
 
 }

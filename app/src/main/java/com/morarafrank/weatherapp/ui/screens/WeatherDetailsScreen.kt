@@ -20,6 +20,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,24 +31,131 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.morarafrank.weatherapp.R
+import com.morarafrank.weatherapp.ui.WeatherAppViewModel
 import com.morarafrank.weatherapp.ui.screens.composables.ForecastCard
+
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun WeatherDetailsScreen(
+//    navigateToSearch: () -> Unit,
+//    modifier: Modifier = Modifier
+//) {
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(Color(0xFFEAF6FF))
+//            .padding(
+//                top = 24.dp,
+//                start = 8.dp,
+//                end = 8.dp
+//            ),
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceBetween,
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Text(
+//                "WeatherApp",
+//                fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+//                fontSize = 20.sp
+//            )
+//
+//            IconButton(onClick = navigateToSearch) {
+//                Icon(Icons.Default.Search, contentDescription = "Search")
+//            }
+//        }
+//
+//        Spacer(modifier = Modifier.height(24.dp))
+//
+//        Text(
+//            text = "Nairobi",
+//            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+//            fontSize = 20.sp
+//        )
+//
+//        Spacer(modifier = Modifier.height(16.dp))
+//
+//        Icon(
+//            Icons.Default.Star,
+//            contentDescription = "Weather Icon",
+//            tint = Color(0xFFFFC107),
+//            modifier = Modifier.size(64.dp)
+//        )
+//
+//        Text(
+//            text = "25°C",
+//            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+//            fontSize = 12.sp
+//        )
+//        Text(
+//            text = "Sunny • Feels like $27°C •",
+//            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+//            fontSize = 12.sp
+//        )
+//        Spacer(modifier = Modifier.height(8.dp))
+//
+//        Text(
+//            text = " Humidity: 37%",
+//            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+//            fontSize = 12.sp
+//        )
+//
+//        Spacer(modifier = Modifier.height(12.dp))
+//        Text(
+//            text = "Last updated: 10:30 AM",
+//            color = Color.Gray,
+//            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+//            fontSize = 12.sp
+//        )
+//
+//        Spacer(modifier = Modifier.height(20.dp))
+//        Text(
+//            text = "Next 5 Days forecast:",
+//            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
+//            fontSize = 14.sp
+//        )
+//
+//        Spacer(modifier = Modifier.height(24.dp))
+//
+//        val days: List<String> = listOf("Mon", "Tue", "Wed", "Thu", "Fri")
+//        val temps: List<Int> = listOf(26, 24, 25, 22, 27)
+//
+//
+//        FlowRow(
+//            modifier = modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceEvenly,
+//            verticalArrangement = Arrangement.spacedBy(16.dp)
+//        ) {
+//            days.forEachIndexed { index, day ->
+//                ForecastCard(
+//                    day = day,
+//                    temp = temps[index]
+//                )
+//            }
+//        }
+//
+//    }
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherDetailsScreen(
     navigateToSearch: () -> Unit,
+    viewModel: WeatherAppViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
+    val city = viewModel.selectedCity.value
+    val weather = viewModel.weatherData.value
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFEAF6FF))
-            .padding(
-                top = 24.dp,
-                start = 8.dp,
-                end = 8.dp
-            ),
+            .padding(top = 24.dp, start = 8.dp, end = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -57,10 +165,8 @@ fun WeatherDetailsScreen(
         ) {
             Text(
                 "WeatherApp",
-                fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-                fontSize = 20.sp
+                style = MaterialTheme.typography.headlineLarge,
             )
-
             IconButton(onClick = navigateToSearch) {
                 Icon(Icons.Default.Search, contentDescription = "Search")
             }
@@ -69,58 +175,59 @@ fun WeatherDetailsScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Nairobi",
-            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-            fontSize = 20.sp
+            text = city ?: "No city selected",
+            style = MaterialTheme.typography.bodyLarge
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Icon(
-            Icons.Default.Star,
-            contentDescription = "Weather Icon",
-            tint = Color(0xFFFFC107),
-            modifier = Modifier.size(64.dp)
-        )
+        if (weather != null) {
+            Icon(
+                Icons.Default.Star,
+                contentDescription = "Weather Icon",
+                tint = Color(0xFFFFC107),
+                modifier = Modifier.size(64.dp)
+            )
 
-        Text(
-            text = "25°C",
-            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-            fontSize = 12.sp
-        )
-        Text(
-            text = "Sunny • Feels like $27°C •",
-            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-            fontSize = 12.sp
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "${weather.main.temp}°C",
+                style = MaterialTheme.typography.bodySmall,
+            )
+            Text(
+                text = "${weather.weather.main} • Feels like ${weather.main.feels_like}°C •",
+                style = MaterialTheme.typography.bodySmall
+            )
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = " Humidity: 37%",
-            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-            fontSize = 12.sp
-        )
+            Text(
+                text = "Humidity: ${weather.main.humidity}%",
+                style = MaterialTheme.typography.bodySmall
+            )
 
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            text = "Last updated: 10:30 AM",
-            color = Color.Gray,
-            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-            fontSize = 12.sp
-        )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "Last updated: ${weather.timezone}",
+                color = Color.Gray,
+                style = MaterialTheme.typography.bodySmall
+            )
+        } else {
+            Text(
+                text = "Loading weather data...",
+                color = Color.Gray,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "Next 5 Days forecast:",
-            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-            fontSize = 14.sp
+            style = MaterialTheme.typography.bodyMedium
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        val days: List<String> = listOf("Mon", "Tue", "Wed", "Thu", "Fri")
-        val temps: List<Int> = listOf(26, 24, 25, 22, 27)
-
+        val days = listOf("Mon", "Tue", "Wed", "Thu", "Fri")
+        val temps = listOf(26, 24, 25, 22, 27)
 
         FlowRow(
             modifier = modifier.fillMaxWidth(),
@@ -128,22 +235,17 @@ fun WeatherDetailsScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             days.forEachIndexed { index, day ->
-                ForecastCard(
-                    day = day,
-                    temp = temps[index]
-                )
+                ForecastCard(day = day, temp = temps[index])
             }
         }
-
     }
 }
 
+
 //@Preview
-@Composable
-private fun PrevHome() {
-    WeatherDetailsScreen(
-        navigateToSearch = {}
-    )
-}
-
-
+//@Composable
+//private fun PrevHome() {
+//    WeatherDetailsScreen(
+//        navigateToSearch = {}
+//    )
+//}
