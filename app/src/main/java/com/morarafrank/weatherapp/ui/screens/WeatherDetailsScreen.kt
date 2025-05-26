@@ -1,5 +1,6 @@
 package com.morarafrank.weatherapp.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,8 +22,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,220 +37,134 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.morarafrank.weatherapp.R
 import com.morarafrank.weatherapp.ui.WeatherAppViewModel
 import com.morarafrank.weatherapp.ui.screens.composables.ForecastCard
-
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun WeatherDetailsScreen(
-//    navigateToSearch: () -> Unit,
-//    modifier: Modifier = Modifier
-//) {
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color(0xFFEAF6FF))
-//            .padding(
-//                top = 24.dp,
-//                start = 8.dp,
-//                end = 8.dp
-//            ),
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//        Row(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalArrangement = Arrangement.SpaceBetween,
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Text(
-//                "WeatherApp",
-//                fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-//                fontSize = 20.sp
-//            )
-//
-//            IconButton(onClick = navigateToSearch) {
-//                Icon(Icons.Default.Search, contentDescription = "Search")
-//            }
-//        }
-//
-//        Spacer(modifier = Modifier.height(24.dp))
-//
-//        Text(
-//            text = "Nairobi",
-//            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-//            fontSize = 20.sp
-//        )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//        Icon(
-//            Icons.Default.Star,
-//            contentDescription = "Weather Icon",
-//            tint = Color(0xFFFFC107),
-//            modifier = Modifier.size(64.dp)
-//        )
-//
-//        Text(
-//            text = "25°C",
-//            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-//            fontSize = 12.sp
-//        )
-//        Text(
-//            text = "Sunny • Feels like $27°C •",
-//            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-//            fontSize = 12.sp
-//        )
-//        Spacer(modifier = Modifier.height(8.dp))
-//
-//        Text(
-//            text = " Humidity: 37%",
-//            fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-//            fontSize = 12.sp
-//        )
-//
-//        Spacer(modifier = Modifier.height(12.dp))
-//        Text(
-//            text = "Last updated: 10:30 AM",
-//            color = Color.Gray,
-//            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-//            fontSize = 12.sp
-//        )
-//
-//        Spacer(modifier = Modifier.height(20.dp))
-//        Text(
-//            text = "Next 5 Days forecast:",
-//            fontFamily = FontFamily(Font(R.font.dm_sans_medium)),
-//            fontSize = 14.sp
-//        )
-//
-//        Spacer(modifier = Modifier.height(24.dp))
-//
-//        val days: List<String> = listOf("Mon", "Tue", "Wed", "Thu", "Fri")
-//        val temps: List<Int> = listOf(26, 24, 25, 22, 27)
-//
-//
-//        FlowRow(
-//            modifier = modifier.fillMaxWidth(),
-//            horizontalArrangement = Arrangement.SpaceEvenly,
-//            verticalArrangement = Arrangement.spacedBy(16.dp)
-//        ) {
-//            days.forEachIndexed { index, day ->
-//                ForecastCard(
-//                    day = day,
-//                    temp = temps[index]
-//                )
-//            }
-//        }
-//
-//    }
-//}
+import com.morarafrank.weatherapp.ui.theme.WeatherAppTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import com.morarafrank.weatherapp.ui.screens.composables.CityWeatherErrorUi
+import com.morarafrank.weatherapp.ui.screens.composables.CityWeatherIdle
+import com.morarafrank.weatherapp.ui.screens.composables.CityWeatherLoadingUi
+import com.morarafrank.weatherapp.ui.screens.composables.CityWeatherUi
+import com.morarafrank.weatherapp.ui.screens.composables.EmptyForecastUi
+import com.morarafrank.weatherapp.ui.screens.composables.ForecastUi
+import com.morarafrank.weatherapp.ui.state.ForecastUiState
+import com.morarafrank.weatherapp.ui.state.WeatherUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherDetailsScreen(
     navigateToSearch: () -> Unit,
     viewModel: WeatherAppViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    city: String? = null,
 ) {
-    val city = viewModel.selectedCity.value
-    val weather = viewModel.weatherData.value
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFEAF6FF))
-            .padding(top = 24.dp, start = 8.dp, end = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                "WeatherApp",
-                style = MaterialTheme.typography.headlineLarge,
-            )
-            IconButton(onClick = navigateToSearch) {
-                Icon(Icons.Default.Search, contentDescription = "Search")
-            }
-        }
+    val weatherUiState by viewModel.weatherUiState.collectAsStateWithLifecycle()
+    val forecastUiState by viewModel.forecastUiState.collectAsStateWithLifecycle()
 
-        Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            text = city ?: "No city selected",
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        if (weather != null) {
-            Icon(
-                Icons.Default.Star,
-                contentDescription = "Weather Icon",
-                tint = Color(0xFFFFC107),
-                modifier = Modifier.size(64.dp)
-            )
-
-            Text(
-                text = "${weather.main.temp}°C",
-                style = MaterialTheme.typography.bodySmall,
-            )
-            Text(
-                text = "${weather.weather.main} • Feels like ${weather.main.feels_like}°C •",
-                style = MaterialTheme.typography.bodySmall
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = "Humidity: ${weather.main.humidity}%",
-                style = MaterialTheme.typography.bodySmall
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Last updated: ${weather.timezone}",
-                color = Color.Gray,
-                style = MaterialTheme.typography.bodySmall
-            )
-        } else {
-            Text(
-                text = "Loading weather data...",
-                color = Color.Gray,
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = "Next 5 Days forecast:",
-            style = MaterialTheme.typography.bodyMedium
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        val days = listOf("Mon", "Tue", "Wed", "Thu", "Fri")
-        val temps = listOf(26, 24, 25, 22, 27)
-
-        FlowRow(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            days.forEachIndexed { index, day ->
-                ForecastCard(day = day, temp = temps[index])
-            }
+    if (city != null) {
+        LaunchedEffect(city) {
+            viewModel.onCitySearched(city)
         }
     }
+
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        "WeatherApp",
+                    )
+                },
+                actions = {
+                    IconButton(onClick = navigateToSearch) {
+                        Icon(Icons.Default.Search, contentDescription = "Search")
+                    }
+                }
+            )
+        },
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(it)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top)
+            ) {
+
+                // Weather details
+                Column(
+                    modifier = modifier.fillMaxWidth()
+                        .weight(2f, true),
+                ) {
+
+                    when(weatherUiState){
+
+                        is WeatherUiState.Idle -> {
+                            CityWeatherIdle()
+                        }
+                        is WeatherUiState.Loading -> {
+                            CityWeatherLoadingUi()
+                        }
+                        is WeatherUiState.Success -> {
+                            CityWeatherUi()
+                        }
+                        is WeatherUiState.Error -> {
+                            CityWeatherErrorUi()
+                        }
+                    }
+
+                }
+
+
+                // Forecast
+                Column(
+                    modifier = modifier.fillMaxWidth()
+                        .weight(1f, true),
+                ) {
+
+                    when(forecastUiState){
+                        is ForecastUiState.Idle -> {
+                            EmptyForecastUi(
+                                "No forecast data available.",
+                            )
+                        }
+                        is ForecastUiState.Loading -> {
+                            CityWeatherLoadingUi()
+                        }
+                        is ForecastUiState.Success -> {
+                            ForecastUi()
+                        }
+                        is ForecastUiState.Error -> {
+                            CityWeatherErrorUi(
+                                errorMessage = "Could not load forecast data.",
+                                onRetry = {}
+                            )
+                        }
+                    }
+                }
+
+
+            }
+        },
+        bottomBar = {}
+    )
 }
 
 
 //@Preview
 //@Composable
 //private fun PrevHome() {
-//    WeatherDetailsScreen(
-//        navigateToSearch = {}
-//    )
+//    WeatherAppTheme {
+//        WeatherDetailsScreen(
+//            navigateToSearch = {}
+//        )
+//    }
 //}

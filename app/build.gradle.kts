@@ -142,5 +142,8 @@ dependencies {
     // Annotation processor
     ksp (libs.androidx.lifecycle.compiler)
 
+    // Lottie
+    implementation(libs.lottie.compose)
+
 
 }

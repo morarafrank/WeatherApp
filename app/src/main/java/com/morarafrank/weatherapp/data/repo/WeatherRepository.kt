@@ -1,5 +1,6 @@
 package com.morarafrank.weatherapp.data.repo
 
+import android.util.Log
 import androidx.compose.runtime.toMutableStateList
 import com.morarafrank.weatherapp.data.local.forecast.ForecastDao
 import com.morarafrank.weatherapp.data.local.forecast.LocalForecast
@@ -15,6 +16,7 @@ import com.morarafrank.weatherapp.domain.model.WeatherResponse
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 
 class WeatherRepository @Inject constructor(
@@ -33,6 +35,7 @@ class WeatherRepository @Inject constructor(
 
             // convert API response to local entity and save to Room
             val localWeather = response.toLocalWeatherEntity()
+            Log.i("WeatherRepository", "Weather fetched from API: $response")
             weatherDao.insertWeather(localWeather)
 
             // Return weather from API response
@@ -43,6 +46,9 @@ class WeatherRepository @Inject constructor(
             // On error, try to fetch cached entity from Room
             val cachedList = weatherDao.getAllLocalWeather().first()
             val cached = cachedList.firstOrNull { it.cityName.equals(city, ignoreCase = true) }
+
+            Log.i("WeatherRepository", "Cached weather: $cached")
+            Log.e("WeatherRepository", "Error fetching weather from API: ${e.message}")
             if (cached == null) {
                 throw e
             }
@@ -82,8 +88,9 @@ class WeatherRepository @Inject constructor(
         return try {
             val response = weatherRemoteDataSource.getFiveDayForecast(city)
 
-            val limitedForecastItems = response.list.take(6)
+            val limitedForecastItems = response.list.take(8)
 
+            Log.i("WeatherRepository", "Forecast fetched from API: $response")
             // Map response to LocalForecast with limited forecasts and save to room
             val localForecast = LocalForecast(
                 city = response.city,
@@ -94,9 +101,15 @@ class WeatherRepository @Inject constructor(
 
             limitedForecastItems
         } catch (e: Exception) {
-            // Log or rethrow
+            if (e is CancellationException) {
+                Log.i("WeatherRepository", "Coroutine was cancelled while fetching forecast.")
+                throw e
+            }
+
+            Log.e("WeatherRepository", "Error fetching forecast from API: ${e.message}")
             throw e
         }
+
     }
 
 

@@ -1,7 +1,9 @@
 package com.morarafrank.weatherapp.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,14 +52,21 @@ fun SearchCityScreen(
     viewModel: WeatherAppViewModel = hiltViewModel()
 ) {
     val query by viewModel.query
-    val filtered by viewModel.filteredCities
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { },
                 navigationIcon = {
-                    IconButton(onClick = navigateBack) {
+                    IconButton(
+                        onClick = {
+                            if(query.isNotEmpty()) {
+                                viewModel.onQueryChanged("")
+                            } else {
+                                navigateBack()
+                            }
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back"
@@ -69,8 +79,10 @@ fun SearchCityScreen(
             Column(
                 modifier = modifier
                     .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(paddingValues)
-                    .padding(horizontal = 16.dp)
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
 
                 OutlinedTextField(
@@ -93,60 +105,27 @@ fun SearchCityScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
 
-                if (filtered.isEmpty()) {
-                    Text(
-                        text = "No matching cities found.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                } else {
-                    LazyColumn {
-                        items(filtered) { city ->
-                            ListItem(
-                                headlineContent = {
-                                    Text(
-                                        text = city,
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                },
-                                leadingContent = {
-                                    Icon(
-                                        imageVector = Icons.Default.LocationOn,
-                                        contentDescription = null
-                                    )
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-
-                                       viewModel.onCitySelected(city)
-                                        navigateBack()
-                                    }
-                            )
-                            Divider()
-                        }
+                AnimatedVisibility(
+                    query.length > 3,
+                ) {
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            viewModel.onCitySearched(query)
+                            navigateBack()
+                        },
+                    ) {
+                        Text(
+                            "Search City",
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(8.dp)
+                        )
                     }
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
 
-                Text(
-                    text = "Last updated: 5 mins ago",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
 
-                Text(
-                    text = "You're offline. Showing cached results.",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 12.dp)
-                )
             }
         }
     )

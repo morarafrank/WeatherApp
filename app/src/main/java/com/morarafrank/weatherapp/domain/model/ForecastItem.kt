@@ -6,5 +6,9 @@ data class ForecastItem(
     val weather: List<RemoteWeather>,
     val clouds: Clouds,
     val wind: Wind,
+    val visibility: Int,
+    val pop: Double,
+    val rain: Rain?,
+    val sys: Sys,
     val dt_txt: String
 )

@@ -46,7 +46,7 @@ fun SplashScreen(
     }
 }
 
-@Preview
+//@Preview
 @Composable
 private fun PrevSplashScreen() {
     WeatherAppTheme {

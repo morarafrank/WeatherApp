@@ -10,6 +10,5 @@ class WeatherApp: Application(){
     override fun onCreate() {
         super.onCreate()
 
-        WeatherSharedPrefs.initSharedPrefs(this)
     }
 }

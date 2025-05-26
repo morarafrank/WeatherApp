@@ -6,6 +6,9 @@ object Constants {
 
     const val DATABASE_NAME = "weather_db"
 
+    const val WEATHER_REPO_TAG = "WeatherRepository"
+    const val FORECAST_REPO_TAG = "WeatherForecastRepository"
+
     object Preferences {
         const val SHARED_PREF_NAME = "weather_shared_pref"
     }

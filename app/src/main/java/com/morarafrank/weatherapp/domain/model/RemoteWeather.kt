@@ -6,12 +6,3 @@ data class RemoteWeather(
     val description: String,
     val icon: String
 )
-
-
-
-
-
-
-
-
-

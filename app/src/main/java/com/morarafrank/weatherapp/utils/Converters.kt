@@ -3,7 +3,9 @@ package com.morarafrank.weatherapp.utils
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.morarafrank.weatherapp.domain.model.City
 import com.morarafrank.weatherapp.domain.model.Clouds
+import com.morarafrank.weatherapp.domain.model.ForecastItem
 import com.morarafrank.weatherapp.domain.model.MainForecast
 import com.morarafrank.weatherapp.domain.model.RemoteWeather
 import com.morarafrank.weatherapp.domain.model.Wind
@@ -63,6 +65,27 @@ class Converters {
         return gson.fromJson(data, Wind::class.java)
     }
 
+    @TypeConverter
+    fun fromForecastList(forecastList: List<ForecastItem>): String {
+        return gson.toJson(forecastList)
+    }
+
+    @TypeConverter
+    fun toForecastList(forecastString: String): List<ForecastItem> {
+        val type = object : TypeToken<List<ForecastItem>>() {}.type
+        return gson.fromJson(forecastString, type)
+    }
+
+
+    @TypeConverter
+    fun fromCity(city: City): String {
+        return gson.toJson(city)
+    }
+
+    @TypeConverter
+    fun toCity(cityString: String): City {
+        return gson.fromJson(cityString, City::class.java)
+    }
 
 }
 

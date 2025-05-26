@@ -40,16 +40,30 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = boldFont,
         fontWeight = FontWeight.Normal,
-        fontSize = 20.sp,
+        fontSize = 24.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),
     labelSmall = TextStyle(
         fontFamily = lightFont,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
+        fontSize = 10.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.4.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = mediumFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.1.sp
+    ),
+    labelLarge = TextStyle(
+        fontFamily = regularFont,
+        fontWeight = FontWeight.Normal,
+        fontSize = 24.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.15.sp
     )
 
     /* Other default text styles to override

@@ -15,12 +15,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.morarafrank.weatherapp.ui.navigation.WeatherNavGraph
 import com.morarafrank.weatherapp.ui.theme.WeatherAppTheme
+import com.morarafrank.weatherapp.utils.WeatherSharedPrefs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private lateinit var sharedPrefs: WeatherSharedPrefs
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        sharedPrefs = WeatherSharedPrefs(this)
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
@@ -30,5 +36,11 @@ class MainActivity : ComponentActivity() {
                     )
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        sharedPrefs.clearWeatherSharedPrefs()
+
     }
 }

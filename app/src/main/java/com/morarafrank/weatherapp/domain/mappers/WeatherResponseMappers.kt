@@ -10,7 +10,7 @@ import com.morarafrank.weatherapp.domain.model.WeatherResponse
 import com.morarafrank.weatherapp.domain.model.Wind
 
 fun WeatherResponse.toLocalWeatherEntity(): LocalWeather {
-    val weather = this.weather
+    val weather = this.weather.firstOrNull()
 
     return LocalWeather(
         id = this.id,
@@ -67,13 +67,13 @@ fun LocalWeather.toWeatherResponse(): WeatherResponse {
 //            )
 //        ),
         weather =
-//            listOf(
+            listOf(
             RemoteWeather(
                 id = this.weatherId,
                 main = this.weatherMain,
                 description = this.weatherDescription,
                 icon = this.weatherIcon
-//            )
+            )
         ),
         base = "local",
         main = MainWeather(
