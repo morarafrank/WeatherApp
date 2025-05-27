@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.morarafrank.weatherapp.R
 import com.morarafrank.weatherapp.domain.model.WeatherResponse
+import com.morarafrank.weatherapp.utils.UiUtils
 
 @Composable
 fun CityWeatherUi(
@@ -25,10 +26,12 @@ fun CityWeatherUi(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(
+                start = 8.dp, end = 8.dp
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement
-            .spacedBy(16.dp, Alignment.CenterVertically)
+            .spacedBy(8.dp, Alignment.CenterVertically)
     ) {
 
         Text(
@@ -64,41 +67,53 @@ fun CityWeatherUi(
                     .toString(),
                 size = 120.dp
             )
-            Text(
-                text = "${weatherData
-                    ?.main
-                    ?.temp
-                    ?.toInt()}°C",
-                style = MaterialTheme.typography.labelMedium
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.Start,
+            ) {
+                Text(
+                    text = "${weatherData
+                        ?.main
+                        ?.temp
+                        ?.toInt()} °C",
+                    style = MaterialTheme.typography.labelMedium
+                )
+//                Text(
+//                    text = "• Feels Like${weatherData?.main?.feels_like?.toInt()}°C",
+//                    style = MaterialTheme.typography.displaySmall
+//                )
+                Text(
+                    text = "• Humidity: ${weatherData?.main?.humidity} %",
+                    style = MaterialTheme.typography.displaySmall
+                )
+                Text(
+                    text = "• Wind: ${weatherData?.wind?.speed} m/s",
+                    style = MaterialTheme.typography.displaySmall
+                )
+
+                Text(
+                    text = weatherData
+                        ?.weather
+                        ?.firstOrNull()
+                        ?.description
+                        .toString(),
+                    style = MaterialTheme.typography.labelMedium
+                )
+            }
         }
 
-        Text(
-            text = weatherData
-                ?.weather
-                ?.firstOrNull()
-                ?.description
-                .toString(),
-            style = MaterialTheme.typography.labelMedium
-        )
+
 
         Text(
-
-            text = "• Feels Like" +
-                    " ${weatherData
-                ?.main?.feels_like
-                ?.toInt()}°C" +
-                    " • Humidity: ${weatherData
-                    ?.main
-                    ?.humidity}%"
-                    + " • Wind: ${weatherData
-                        ?.wind
-                        ?.speed} m/s",
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-                fontSize = 16.sp
-            )
+            text = "5-Day Forecast: ",
+            style = MaterialTheme.typography.bodyLarge,
         )
+//
+//        Text(
+//            text = "Last updated: ${UiUtils.formatDate(weatherData?.dt)} at ${UiUtils.formatTime(weatherData?.dt)}",
+//            style = MaterialTheme.typography.bodySmall,
+//            color = MaterialTheme.colorScheme.onSurfaceVariant,
+//        )
 
     }
 }

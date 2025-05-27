@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,28 +23,26 @@ fun ForecastUi(
     forecastData: List<ForecastItem>
 ) {
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement
-            .spacedBy(16.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
+    //        FlowRow(
+//            modifier = modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceEvenly,
+//            verticalArrangement = Arrangement.spacedBy(16.dp)
+//        ) {
+//            forecastData.forEach { forecastItem ->
+//                ForecastCard(
+//                    forecastItem
+//                )
+//            }
+//        }
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        modifier = modifier.fillMaxWidth()
     ) {
 
-        Text(
-            text = "5-Day Forecast: ",
-            style = MaterialTheme.typography.bodyLarge,
-        )
-
-        FlowRow(
-            modifier = modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            forecastData.forEach { forecastItem ->
-                ForecastCard(
-                    forecastItem
-                )
-            }
+        items(forecastData){ forecastItem ->
+            ForecastCard(
+                forecastItem = forecastItem
+            )
         }
     }
 }

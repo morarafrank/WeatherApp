@@ -2,6 +2,7 @@ package com.morarafrank.weatherapp.ui.screens
 
 import android.os.Build.VERSION_CODES.O
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -67,28 +69,30 @@ fun WeatherDetailsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        "WeatherApp",
-                    )
-                },
-                actions = {
-                    IconButton(onClick = { showSearch = true }) {
-                        Icon(
-                            Icons.Default.Search,
-                            contentDescription = "Search"
+            AnimatedVisibility(
+                visible = !showSearch
+            ) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            "WeatherApp",
                         )
+                    },
+                    actions = {
+                        IconButton(onClick = { showSearch = true }) {
+                            Icon(
+                                Icons.Default.Search,
+                                contentDescription = "Search"
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
         },
         content = {
             Column(
                 modifier = modifier
                     .fillMaxSize()
-//                    .background(MaterialTheme.colorScheme.background)
-//                    .background(MaterialTheme.colorScheme.primary)
                     .padding(it)
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -107,10 +111,8 @@ fun WeatherDetailsScreen(
                     )
                 } else{
                     // Weather details
-                    /*Column(
+                    Column(
                         modifier = modifier.fillMaxWidth()
-//                            .fillMaxHeight(0.6f)
-                        .weight(1f, true),
                     ) {
 
                         when(weatherUiState){
@@ -136,13 +138,13 @@ fun WeatherDetailsScreen(
                             }
                         }
 
-                    }*/
+                    }
 
+                    Spacer(modifier.height(8.dp))
 
                     // Forecast
                     Column(
                         modifier = modifier.fillMaxWidth()
-                        .weight(1f, true),
                     ) {
 
                         when(forecastUiState){
@@ -168,12 +170,6 @@ fun WeatherDetailsScreen(
                         }
                     }
 
-
-                    Text(
-                        text = UiUtils.formatLastUpdated(weatherData?.dt),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
                 }
             }
         },
