@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.morarafrank.weatherapp.ui.navigation.Screens.WeatherDetailsScreen
-import com.morarafrank.weatherapp.ui.screens.SearchCityScreen
 import com.morarafrank.weatherapp.ui.screens.SplashScreen
 import com.morarafrank.weatherapp.ui.screens.WeatherDetailsScreen
 
@@ -32,28 +31,9 @@ fun WeatherNavGraph(
         }
 
         composable(
-            route = Screens.WeatherDetailsScreen.route + "/{cityName}",
-            arguments = listOf(navArgument("city"){
-                type = StringType
-                defaultValue = "Nairobi"
-            })
-
-        ) {
-            WeatherDetailsScreen(
-                navigateToSearch = {
-                    navController.navigate(Screens.SearchCityScreen.route)
-                }
-            )
-        }
-
-        composable(
-            route = Screens.SearchCityScreen.route
-        ) {
-            SearchCityScreen(
-                navigateBack = {
-                    navController.popBackStack()
-                }
-            )
+            route = WeatherDetailsScreen.route,
+        ){
+            WeatherDetailsScreen()
         }
     }
 

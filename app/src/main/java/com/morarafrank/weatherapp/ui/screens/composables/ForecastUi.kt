@@ -12,49 +12,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.morarafrank.weatherapp.domain.model.ForecastItem
 
-//@Preview
-//    (showBackground = true)
 @Composable
-fun ForecastUi(modifier: Modifier = Modifier) {
+fun ForecastUi(
+    modifier: Modifier = Modifier,
+    forecastData: List<ForecastItem>
+) {
 
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement
+            .spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Column(
-            modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "5-Day Forecast: ",
-                style = MaterialTheme.typography.bodyLarge,
-            )
-
-            FlowRow(
-                modifier = modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-
-                repeat(5) {
-                    ForecastCard(
-                        main = "Cloudy",
-                        temp = 25,
-                        details = "chance of rain"
-                    )
-                }
-            }
-        }
-
         Text(
-            text = "Last updated: 5 mins ago",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            text = "5-Day Forecast: ",
+            style = MaterialTheme.typography.bodyLarge,
         )
 
-
+        FlowRow(
+            modifier = modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            forecastData.forEach { forecastItem ->
+                ForecastCard(
+                    forecastItem
+                )
+            }
+        }
     }
 }

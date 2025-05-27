@@ -145,5 +145,8 @@ dependencies {
     // Lottie
     implementation(libs.lottie.compose)
 
+    // Coil compose
+    implementation(libs.coil.compose)
+
 
 }

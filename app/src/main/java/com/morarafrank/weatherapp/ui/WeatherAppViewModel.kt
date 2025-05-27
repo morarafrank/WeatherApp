@@ -1,6 +1,8 @@
 package com.morarafrank.weatherapp.ui
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -22,8 +24,14 @@ import com.morarafrank.weatherapp.ui.state.UiEvent
 import com.morarafrank.weatherapp.utils.WeatherSharedPrefs
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.random.Random
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class WeatherAppViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
@@ -32,7 +40,7 @@ class WeatherAppViewModel @Inject constructor(
 
     private val TAG = "WeatherAppViewModel"
 
-    private val _weatherUiState = MutableStateFlow<WeatherUiState>(WeatherUiState.Loading)
+    private val _weatherUiState = MutableStateFlow<WeatherUiState>(WeatherUiState.Idle)
     val weatherUiState: StateFlow<WeatherUiState> = _weatherUiState.asStateFlow()
 
 
@@ -56,6 +64,10 @@ class WeatherAppViewModel @Inject constructor(
     private val _uiEvent = MutableSharedFlow<UiEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
+    // error message
+    private val _errorMessage = mutableStateOf<String?>(null)
+    val errorMessage: State<String?> = _errorMessage
+
 
     fun onQueryChanged(newQuery: String) {
         _query.value = newQuery
@@ -64,21 +76,19 @@ class WeatherAppViewModel @Inject constructor(
     private val _selectedCity = mutableStateOf<String?>(null)
     val selectedCity: State<String?> = _selectedCity
 
+    val savedCity = sharedPrefs.getCity()
+
     init {
-        initializeCityWeather()
+       if (savedCity.isNullOrEmpty()){
+            Log.i(TAG, "No saved city found.")
+        } else {
+            Log.i(TAG, "Saved city found: $savedCity, initializing with it.")
+            initializeCityWeather()
+       }
     }
 
     fun initializeCityWeather() {
-        val savedCity = sharedPrefs.getCity()
         savedCity?.let { searchCity(it, saveToPrefs = false) }
-    }
-
-    fun onCitySearched(city: String) {
-
-        sharedPrefs.clearWeatherSharedPrefs()
-//            .apply {
-//            searchCity(city, saveToPrefs = false) }
-        searchCity(city, saveToPrefs = true)
     }
 
     private fun searchCity(city: String, saveToPrefs: Boolean) {
@@ -91,50 +101,54 @@ class WeatherAppViewModel @Inject constructor(
 
         viewModelScope.launch {
             fetchCityWeather(city)
-//            fetchCityForeCast(city)
+            fetchCityForeCast(city)
         }
     }
 
-    fun refreshData() {
-        _selectedCity.value?.let { city ->
-            viewModelScope.launch {
-                try {
-                    fetchCityWeather(city)
-                    fetchCityForeCast(city)
-                } catch (e: Exception) {
-                    _uiEvent.emit(UiEvent.ShowSnackbar("Refresh failed. Please check your connection."))
-                }
-            }
-        }
-    }
-    fun clearWeatherData() {
-        _weatherData.value = null
-        _fiveDayForecast.value = emptyList()
-        _weatherUiState.value = WeatherUiState.Idle
-        _forecastUiState.value = ForecastUiState.Idle
-        _selectedCity.value = null
-        sharedPrefs.clearWeatherSharedPrefs()
-    }
+//    fun refreshData() {
+//        _selectedCity.value?.let { city ->
+//            viewModelScope.launch {
+//                try {
+//                    fetchCityWeather(city)
+//                    fetchCityForeCast(city)
+//                } catch (e: Exception) {
+//                    _uiEvent.emit(UiEvent.ShowSnackbar("Refresh failed. Please check your connection."))
+//                }
+//            }
+//        }
+//    }
+//    fun clearWeatherData() {
+//        _weatherData.value = null
+//        _fiveDayForecast.value = emptyList()
+//        _weatherUiState.value = WeatherUiState.Idle
+//        _forecastUiState.value = ForecastUiState.Idle
+//        _selectedCity.value = null
+//        sharedPrefs.clearWeatherSharedPrefs()
+//    }
     fun fetchCityWeather(city: String) {
         viewModelScope.launch {
-            _weatherUiState.value = WeatherUiState.Loading
 
+            _weatherUiState.value = WeatherUiState.Idle
             try {
                 val response = weatherRepository.getWeather(city)
+                _weatherUiState.value = WeatherUiState.Loading
+
                 if (response.cod == 200) {
                     _weatherUiState.value = WeatherUiState.Success(response)
                     _weatherData.value = response
                     Log.d(TAG, "Weather data fetched successfully: $response")
 
-                    // Fetch the five-day forecast
-//                    _fiveDayForecast.value = weatherRepository.getFiveDayForecastFromRemoteSource(city)
                 } else {
                     _weatherUiState.value = WeatherUiState.Error("Error fetching weather: $response")
                     Log.e(TAG, "Error fetching weather: $response")
+                    _errorMessage.value = "Error fetching weather: $response"
                 }
             } catch (e: Exception) {
-                _weatherUiState.value = WeatherUiState.Error("Could not fetch weather: ${e.localizedMessage}")
+                _weatherUiState.value = WeatherUiState.Error("Could not fetch weather: ${e.message}")
                 Log.e(TAG, "Could not fetch weather: ${e.localizedMessage}", e)
+                Log.e(TAG, "Could not fetch weather: ${e.message}", e)
+                Log.e(TAG, "Could not fetch weather: ${e.cause}", e)
+                _errorMessage.value = "Could not fetch weather: ${e.localizedMessage ?: e.message ?: "Unknown error"}"
             }
         }
     }
@@ -149,6 +163,7 @@ class WeatherAppViewModel @Inject constructor(
                     _fiveDayForecast.value = forecast
                     _forecastUiState.value = ForecastUiState.Success(forecast)
                     Log.d(TAG, "Forecast data fetched successfully for $city: $forecast")
+                    Log.d(TAG, "Forecast size ${forecast.size}")
                 } else {
                     _weatherUiState.value = WeatherUiState.Error("No forecast data available for $city")
                     _forecastUiState.value = ForecastUiState.Error("No forecast data available for $city")
@@ -162,5 +177,9 @@ class WeatherAppViewModel @Inject constructor(
         }
     }
 
+    // set ui state
+    fun setWeatherUiState(state: WeatherUiState) {
+        _weatherUiState.value = state
+    }
 
 }

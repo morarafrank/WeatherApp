@@ -30,13 +30,11 @@ import androidx.compose.ui.unit.sp
 import com.morarafrank.weatherapp.R
 import com.morarafrank.weatherapp.domain.model.ForecastItem
 import com.morarafrank.weatherapp.ui.theme.WeatherAppTheme
+import com.morarafrank.weatherapp.utils.UiUtils
 
 @Composable
 fun ForecastCard(
-//    forecastItem: ForecastItem
-    main: String,
-    temp: Int,
-    details: String,
+    forecastItem: ForecastItem
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -55,8 +53,7 @@ fun ForecastCard(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-//                forecastItem.weather.firstOrNull()?.main.toString(),
-                main,
+                forecastItem.weather.firstOrNull()?.main.toString(),
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(Modifier.height(4.dp))
@@ -67,35 +64,36 @@ fun ForecastCard(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally)
             ) {
-                Image(
-                    painter = androidx.compose.ui.res.painterResource(id = R.drawable._02d),
-                    contentDescription = null,
-                    modifier = Modifier.size(50.dp)
+
+                WeatherIcon(
+                    size = 50.dp,
+                    iconCode = forecastItem.weather.firstOrNull()?.icon.toString()
+
                 )
 
                 Text(
-//                    "${forecastItem.main.temp.toInt()}°C" ,
-                    "$temp°C" ,
+                    "${forecastItem.main.temp.toInt()}°C" ,
                     style = MaterialTheme.typography.labelSmall
                 )
             }
             Text(
-//                forecastItem.weather.firstOrNull()?.description.toString(),
-                details,
+                forecastItem.weather.firstOrNull()?.description.toString(),
                 style = MaterialTheme.typography.bodySmall
+            )
+
+            Text(
+                text = UiUtils.formatDate(forecastItem.dt),
+                style = MaterialTheme.typography.bodySmall,
+                fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+                fontSize = 12.sp
+            )
+
+            Text(
+                text = UiUtils.formatTime(forecastItem.dt),
+                style = MaterialTheme.typography.bodySmall,
+                fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
+                fontSize = 12.sp
             )
         }
     }
 }
-
-//@Preview()
-//@Composable
-//private fun PrevForecastCard() {
-//    WeatherAppTheme {
-//        ForecastCard(
-//            main = "Cloudy",
-//            temp = 25,
-//            details = "Partly cloudy"
-//        )
-//    }
-//}

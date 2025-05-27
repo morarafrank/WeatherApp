@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +20,6 @@ import com.morarafrank.weatherapp.R
 import com.morarafrank.weatherapp.ui.theme.WeatherAppTheme
 import kotlinx.coroutines.delay
 
-//@Preview(showBackground = true)
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
@@ -27,7 +27,7 @@ fun SplashScreen(
 ) {
 
     LaunchedEffect(Unit) {
-        delay(3000L)
+        delay(2500L)
         navigateToWeatherDetails()
     }
     Column(
@@ -41,17 +41,8 @@ fun SplashScreen(
         Text(
             "WeatherApp",
             style = MaterialTheme.typography.headlineLarge,
+            color = Color.White,
             )
 
-    }
-}
-
-//@Preview
-@Composable
-private fun PrevSplashScreen() {
-    WeatherAppTheme {
-        SplashScreen(
-            navigateToWeatherDetails = {}
-        )
     }
 }

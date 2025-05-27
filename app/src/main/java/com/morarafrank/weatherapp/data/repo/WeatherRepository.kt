@@ -88,7 +88,8 @@ class WeatherRepository @Inject constructor(
         return try {
             val response = weatherRemoteDataSource.getFiveDayForecast(city)
 
-            val limitedForecastItems = response.list.take(8)
+//            val limitedForecastItems = response.list.take(8)
+            val limitedForecastItems = response.list
 
             Log.i("WeatherRepository", "Forecast fetched from API: $response")
             // Map response to LocalForecast with limited forecasts and save to room
