@@ -1,6 +1,5 @@
 package com.morarafrank.weatherapp.ui.screens.composables
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,25 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.morarafrank.weatherapp.R
 import com.morarafrank.weatherapp.domain.model.ForecastItem
-import com.morarafrank.weatherapp.ui.theme.WeatherAppTheme
 import com.morarafrank.weatherapp.utils.UiUtils
 
 @Composable
@@ -42,7 +31,6 @@ fun ForecastCard(
             .padding(2.dp)
             .size(120.dp),
         colors = CardDefaults.cardColors(
-//            containerColor = Color.White,
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
         )
@@ -75,7 +63,7 @@ fun ForecastCard(
 
                 Text(
                     "${forecastItem.main.temp.toInt()}°C" ,
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.displayMedium
                 )
             }
             Text(

@@ -19,11 +19,18 @@ fun CityWeatherIdle(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp, Alignment.CenterVertically)
+        verticalArrangement = androidx.compose.foundation.layout.Arrangement
+            .spacedBy(12.dp, Alignment.CenterVertically)
     ) {
 
-         Text(text = "Welcome to the Weather App", style = MaterialTheme.typography.bodyLarge)
-         Text(text = "Search for city to get it's weather", style = MaterialTheme.typography.bodyMedium)
+         Text(
+             text = "Welcome to the Weather App",
+             style = MaterialTheme.typography.bodyLarge
+         )
+         Text(
+             text = "Search for city to get it's weather",
+             style = MaterialTheme.typography.bodyMedium
+         )
 
     }
 }

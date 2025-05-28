@@ -86,7 +86,7 @@ fun CitySearchUi(
                 } else{
                     Toast.makeText(
                         context,
-                        "Please enter a city name",
+                        "Please enter a city name to get its weather",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
