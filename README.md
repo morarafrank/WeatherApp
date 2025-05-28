@@ -94,10 +94,4 @@ MIT License. Feel free to fork, modify, and share.
 ## 🤝 Contributing
 
 Pull requests are welcome! If you find a bug or want to add features, please open an issue.
-
-```
-
----
-
-Would you like me to generate this README.md with personalized project details and export it for you as a file to include in your GitHub repo?
 ```
