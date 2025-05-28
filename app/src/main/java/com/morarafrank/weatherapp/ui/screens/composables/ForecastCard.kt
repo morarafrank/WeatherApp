@@ -42,7 +42,9 @@ fun ForecastCard(
             .padding(2.dp)
             .size(120.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White,
+//            containerColor = Color.White,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
         Column(
@@ -77,22 +79,18 @@ fun ForecastCard(
                 )
             }
             Text(
-                forecastItem.weather.firstOrNull()?.description.toString(),
+               UiUtils.toCapitation( forecastItem.weather.firstOrNull()?.description.toString()),
                 style = MaterialTheme.typography.bodySmall
             )
 
             Text(
                 text = UiUtils.formatDate(forecastItem.dt),
-                style = MaterialTheme.typography.bodySmall,
-                fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-                fontSize = 12.sp
+                style = MaterialTheme.typography.labelSmall,
             )
 
             Text(
                 text = UiUtils.formatTime(forecastItem.dt),
-                style = MaterialTheme.typography.bodySmall,
-                fontFamily = FontFamily(Font(R.font.dm_sans_regular)),
-                fontSize = 12.sp
+                style = MaterialTheme.typography.labelSmall,
             )
         }
     }

@@ -20,10 +20,12 @@ import com.morarafrank.weatherapp.data.local.forecast.LocalForecast
 import com.morarafrank.weatherapp.domain.model.ForecastItem
 import com.morarafrank.weatherapp.domain.model.WeatherResponse
 import com.morarafrank.weatherapp.ui.state.ForecastUiState
+import com.morarafrank.weatherapp.ui.state.LocalForecastUiState
 import com.morarafrank.weatherapp.ui.state.UiEvent
 import com.morarafrank.weatherapp.utils.WeatherSharedPrefs
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -31,7 +33,6 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import kotlin.random.Random
 
-@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class WeatherAppViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
@@ -57,6 +58,14 @@ class WeatherAppViewModel @Inject constructor(
     // five day forecast
     private val _fiveDayForecast = MutableStateFlow<List<ForecastItem>>(emptyList())
     val fiveDayForecast: StateFlow<List<ForecastItem>> = _fiveDayForecast.asStateFlow()
+
+    private val _localForecasts = MutableStateFlow<List<LocalForecast>>(emptyList())
+    val localForecasts: StateFlow<List<LocalForecast>> = _localForecasts.asStateFlow()
+
+    private val _localForecastUiState = MutableStateFlow<LocalForecastUiState>(LocalForecastUiState.Idle)
+    val localForecastUiState: StateFlow<LocalForecastUiState> = _localForecastUiState.asStateFlow()
+
+
 
     private val _query = mutableStateOf("")
     val query: State<String> = _query
@@ -128,10 +137,9 @@ class WeatherAppViewModel @Inject constructor(
     fun fetchCityWeather(city: String) {
         viewModelScope.launch {
 
-            _weatherUiState.value = WeatherUiState.Idle
+            _weatherUiState.value = WeatherUiState.Loading
             try {
                 val response = weatherRepository.getWeather(city)
-                _weatherUiState.value = WeatherUiState.Loading
 
                 if (response.cod == 200) {
                     _weatherUiState.value = WeatherUiState.Success(response)
@@ -174,6 +182,36 @@ class WeatherAppViewModel @Inject constructor(
                 _forecastUiState.value = ForecastUiState.Error("Could not fetch forecast: ${e.localizedMessage}")
                 Log.e(TAG, "Could not fetch forecast: ${e.localizedMessage}", e)
             }
+        }
+    }
+
+
+    fun fetchLocalForecastList(city: String) = viewModelScope.launch {
+        _localForecastUiState.value = LocalForecastUiState.Loading
+        try {
+
+            weatherRepository.getForecastsFromLocal(city).collectLatest { forecasts ->
+                if (forecasts.isNotEmpty()) {
+//                    val forecastItems = it.map { localForecast ->
+//                        ForecastItem(
+//                            date = LocalDateTime.ofEpochSecond(localForecast.dt, 0, ZoneOffset.UTC)
+//                                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+//                            temp = localForecast.temp,
+//                            weatherDescription = localForecast.weatherDescription,
+//                            weatherIcon = localForecast.weatherIcon
+//                        )
+//                    }
+                    _localForecasts.value = forecasts
+                    _localForecastUiState.value = LocalForecastUiState.Success(forecasts)
+                    Log.d(TAG, "Local forecast data fetched successfully for $city: $forecasts")
+                } else {
+                    _localForecastUiState.value = LocalForecastUiState.Error("No local forecast data available for $city")
+                    Log.e(TAG, "No local forecast data available for $city")
+                }
+            }
+        } catch (e: Exception) {
+            _localForecastUiState.value = LocalForecastUiState.Error("Could not fetch local forecast: ${e.localizedMessage}")
+            Log.e(TAG, "Could not fetch local forecast: ${e.localizedMessage}", e)
         }
     }
 

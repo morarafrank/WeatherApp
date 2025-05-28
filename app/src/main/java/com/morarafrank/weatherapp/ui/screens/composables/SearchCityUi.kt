@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CitySearchUi(
+    modifier: Modifier = Modifier,
     onCitySelected: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -37,18 +38,18 @@ fun CitySearchUi(
     val context = LocalContext.current
 
     Column(
+        modifier = modifier.fillMaxSize().padding(start = 8.dp, end = 8.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
-        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
         ) {
             Text(
                 "Search City",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.displayMedium
             )
             IconButton(onClick = onDismiss) {
                 Icon(Icons.Default.Close, contentDescription = "Close Search")
@@ -74,7 +75,7 @@ fun CitySearchUi(
             },
             singleLine = true,
             shape = RoundedCornerShape(30.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         )
 
         Button(
@@ -90,10 +91,14 @@ fun CitySearchUi(
                     ).show()
                 }
             },
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
         ) {
-            Text("Search", modifier = Modifier.padding(4.dp))
+            Text(
+                "Search",
+                modifier = modifier.padding(4.dp),
+                style = MaterialTheme.typography.displayMedium
+            )
         }
     }
 }

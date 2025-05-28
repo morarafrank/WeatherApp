@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -35,6 +36,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.morarafrank.weatherapp.R
 import com.morarafrank.weatherapp.ui.screens.composables.CitySearchUi
 import com.morarafrank.weatherapp.ui.screens.composables.CityWeatherErrorUi
 import com.morarafrank.weatherapp.ui.screens.composables.CityWeatherIdle
@@ -45,7 +47,6 @@ import com.morarafrank.weatherapp.ui.screens.composables.ForecastUi
 import com.morarafrank.weatherapp.ui.state.ForecastUiState
 import com.morarafrank.weatherapp.ui.state.WeatherUiState
 import com.morarafrank.weatherapp.utils.UiUtils
-@RequiresApi(O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherDetailsScreen(
@@ -89,14 +90,16 @@ fun WeatherDetailsScreen(
                 )
             }
         },
-        content = {
+        /*content = {
             Column(
                 modifier = modifier
                     .fillMaxSize()
                     .padding(it)
-                    .padding(16.dp),
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState())
+                ,
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
+//                verticalArrangement = Arrangement.SpaceEvenly
             ) {
 
                 // Search Overlay UI
@@ -106,6 +109,7 @@ fun WeatherDetailsScreen(
                             showSearch = false
                             viewModel.fetchCityWeather(selectedCity)
                             viewModel.fetchCityForeCast(selectedCity)
+//                            viewModel.fetchLocalForecastList(selectedCity)
                         },
                         onDismiss = { showSearch = false }
                     )
@@ -121,7 +125,11 @@ fun WeatherDetailsScreen(
                                 CityWeatherIdle()
                             }
                             is WeatherUiState.Loading -> {
-                                CityWeatherLoadingUi()
+                                CityWeatherLoadingUi(
+                                    size = 200.dp,
+                                    title = "Loading weather data...",
+                                    animation = R.raw.loading_anim0
+                                )
                             }
                             is WeatherUiState.Success -> {
                                 CityWeatherUi(
@@ -154,7 +162,11 @@ fun WeatherDetailsScreen(
                                 )
                             }
                             is ForecastUiState.Loading -> {
-                                CityWeatherLoadingUi()
+                                CityWeatherLoadingUi(
+                                    size = 200.dp,
+                                    title = "Loading forecast data...",
+                                    animation = R.raw.loading_anim0
+                                )
                             }
                             is ForecastUiState.Success -> {
                                 ForecastUi(
@@ -172,7 +184,85 @@ fun WeatherDetailsScreen(
 
                 }
             }
+        },*/
+
+        content = { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    if (showSearch) {
+                        CitySearchUi(
+                            onCitySelected = { selectedCity ->
+                                showSearch = false
+                                viewModel.fetchCityWeather(selectedCity)
+                                viewModel.fetchCityForeCast(selectedCity)
+                            },
+                            onDismiss = { showSearch = false }
+                        )
+                    } else {
+                        Column {
+                            when (weatherUiState) {
+                                is WeatherUiState.Idle -> CityWeatherIdle()
+                                is WeatherUiState.Loading -> CityWeatherLoadingUi(
+                                    size = 200.dp,
+                                    title = "Loading weather data...",
+                                    animation = R.raw.loading_anim0
+                                )
+                                is WeatherUiState.Success -> CityWeatherUi(weatherData = weatherData)
+                                is WeatherUiState.Error -> CityWeatherErrorUi(
+                                    errorMessage = viewModel.errorMessage.value.toString(),
+                                    onRetry = { showSearch = true }
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            when (forecastUiState) {
+                                is ForecastUiState.Idle -> EmptyForecastUi("No forecast data available.")
+                                is ForecastUiState.Loading -> CityWeatherLoadingUi(
+                                    size = 200.dp,
+                                    title = "Loading forecast data...",
+                                    animation = R.raw.loading_anim0
+                                )
+                                is ForecastUiState.Success -> ForecastUi(forecastData = forecastData)
+                                is ForecastUiState.Error -> CityWeatherErrorUi(
+                                    errorMessage = "Could not load forecast data.",
+                                    onRetry = {
+                                        showSearch = true
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+//                item { Spacer(modifier = Modifier.height(8.dp)) }
+//
+//                item {
+//                    when (forecastUiState) {
+//                        is ForecastUiState.Idle -> EmptyForecastUi("No forecast data available.")
+//                        is ForecastUiState.Loading -> CityWeatherLoadingUi(
+//                            size = 200.dp,
+//                            title = "Loading forecast data...",
+//                            animation = R.raw.loading_anim0
+//                        )
+//                        is ForecastUiState.Success -> ForecastUi(forecastData = forecastData)
+//                        is ForecastUiState.Error -> CityWeatherErrorUi(
+//                            errorMessage = "Could not load forecast data.",
+//                            onRetry = {
+//                                showSearch = true
+//                            }
+//                        )
+//                    }
+//                }
+            }
         },
-        bottomBar = {}
+
+    bottomBar = {}
     )
 }

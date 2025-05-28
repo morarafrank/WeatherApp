@@ -41,4 +41,11 @@ object UiUtils {
         return timeFormat.format(date)
     }
 
+    fun toCapitation(sentence: String): String {
+        return sentence
+            .split(" ")
+            .joinToString(" ") { word -> word.replaceFirstChar { it.uppercaseChar() } }
+    }
+
+
 }

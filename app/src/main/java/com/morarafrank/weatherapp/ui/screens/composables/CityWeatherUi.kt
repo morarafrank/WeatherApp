@@ -76,7 +76,7 @@ fun CityWeatherUi(
                         ?.main
                         ?.temp
                         ?.toInt()} °C",
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelLarge
                 )
 //                Text(
 //                    text = "• Feels Like${weatherData?.main?.feels_like?.toInt()}°C",
@@ -92,11 +92,13 @@ fun CityWeatherUi(
                 )
 
                 Text(
-                    text = weatherData
-                        ?.weather
-                        ?.firstOrNull()
-                        ?.description
-                        .toString(),
+                    text = UiUtils.toCapitation(
+                        weatherData
+                            ?.weather
+                            ?.firstOrNull()
+                            ?.description
+                            .toString()
+                    ),
                     style = MaterialTheme.typography.labelMedium
                 )
             }
@@ -108,12 +110,12 @@ fun CityWeatherUi(
             text = "5-Day Forecast: ",
             style = MaterialTheme.typography.bodyLarge,
         )
-//
-//        Text(
-//            text = "Last updated: ${UiUtils.formatDate(weatherData?.dt)} at ${UiUtils.formatTime(weatherData?.dt)}",
-//            style = MaterialTheme.typography.bodySmall,
-//            color = MaterialTheme.colorScheme.onSurfaceVariant,
-//        )
+
+        Text(
+            text = "Last updated on: ${UiUtils.formatDate(weatherData?.dt)} at ${UiUtils.formatTime(weatherData?.dt)}",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
 
     }
 }

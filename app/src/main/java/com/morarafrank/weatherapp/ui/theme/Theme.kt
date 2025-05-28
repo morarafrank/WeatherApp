@@ -14,15 +14,6 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import com.morarafrank.weatherapp.R
 
-//val fontFamily = FontFamily(
-//    Font(R.font.dm_sans_regular),
-////    Font(R.font.dm_sans_bold),
-////    Font(R.font.dm_sans_medium),
-////    Font(R.font.dm_sans_light),
-////    Font(R.font.dm_sans_semibold),
-//
-//)
-
 private val DarkColorScheme = darkColorScheme(
     primary = Blue,
     secondary = DarkBlue,
@@ -30,10 +21,13 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-    background = Background
+//    primary = Purple40,
+//    secondary = PurpleGrey40,
+//    tertiary = Pink40,
+//    background = Background
+    primary = Blue,
+    secondary = DarkBlue,
+    tertiary = Red
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
