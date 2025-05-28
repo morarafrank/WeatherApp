@@ -81,7 +81,15 @@ OPENWEATHER_API_KEY=YOUR_API_KEY
 
 ## 📸 Screenshots
 
-<img src="https://github.com/user-attachments/assets/66c5e1a3-1cfc-4a95-9e67-12f3bd757d63" width="400" /> <img src="https://github.com/user-attachments/assets/6b12151f-92ea-4ec9-95c0-d100e72f1eef" width="400" /> <img src="https://github.com/user-attachments/assets/ae945ea8-9a7c-431d-ac58-d915de01a1fb" width="400" /> <img src="https://github.com/user-attachments/assets/6e1b9424-be1a-4700-95fb-c0719d114ff9" width="400" /> <img src="https://github.com/user-attachments/assets/7906accc-1395-4063-9be9-319314e1494c" width="400" /> <img src="https://github.com/user-attachments/assets/4e6aa3c0-f059-42d8-b2c0-913c6233dd06" width="400" /> <img src="https://github.com/user-attachments/assets/1d91e925-9eff-4d59-ae6f-584c6b1ff6d3" width="400" />
+<div style="display: flex; flex-wrap: wrap; gap: 8px; max-width: 1000px;">
+  <img src="https://github.com/user-attachments/assets/66c5e1a3-1cfc-4a95-9e67-12f3bd757d63" height="180" />
+  <img src="https://github.com/user-attachments/assets/6b12151f-92ea-4ec9-95c0-d100e72f1eef" height="180" />
+  <img src="https://github.com/user-attachments/assets/ae945ea8-9a7c-431d-ac58-d915de01a1fb" height="180" />
+  <img src="https://github.com/user-attachments/assets/6e1b9424-be1a-4700-95fb-c0719d114ff9" height="180" />
+  <img src="https://github.com/user-attachments/assets/4e6aa3c0-f059-42d8-b2c0-913c6233dd06" height="180" />
+  <img src="https://github.com/user-attachments/assets/1d91e925-9eff-4d59-ae6f-584c6b1ff6d3" height="180" />
+</div>
+
 
 ---
 
