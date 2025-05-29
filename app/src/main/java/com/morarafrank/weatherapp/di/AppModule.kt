@@ -3,8 +3,6 @@ package com.morarafrank.weatherapp.di
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.morarafrank.weatherapp.data.local.WeatherDatabase
 import com.morarafrank.weatherapp.data.local.forecast.ForecastDao
 import com.morarafrank.weatherapp.data.local.weather.WeatherDao
@@ -18,7 +16,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit

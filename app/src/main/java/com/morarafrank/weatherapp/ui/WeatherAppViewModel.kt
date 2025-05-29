@@ -5,27 +5,34 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.morarafrank.weatherapp.data.local.forecast.LocalForecast
-import com.morarafrank.weatherapp.data.local.weather.LocalWeather
 import com.morarafrank.weatherapp.data.repo.WeatherRepository
 import com.morarafrank.weatherapp.domain.model.ForecastItem
 import com.morarafrank.weatherapp.domain.model.WeatherResponse
 import com.morarafrank.weatherapp.ui.state.ForecastUiState
+import com.morarafrank.weatherapp.ui.state.NetworkStatusTracker
 import com.morarafrank.weatherapp.ui.state.UiEvent
 import com.morarafrank.weatherapp.ui.state.WeatherUiState
+import com.morarafrank.weatherapp.utils.NetworkStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class WeatherAppViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
-): ViewModel() {
+    networkStatusTracker: NetworkStatusTracker
+
+    ): ViewModel() {
 
     private val TAG = "WeatherAppViewModel"
 
@@ -44,7 +51,6 @@ class WeatherAppViewModel @Inject constructor(
     private val _fiveDayForecast = MutableStateFlow<List<ForecastItem>>(emptyList())
     val fiveDayForecast: StateFlow<List<ForecastItem>> = _fiveDayForecast.asStateFlow()
 
-
     private val _query = mutableStateOf("")
     val query: State<String> = _query
 
@@ -55,7 +61,6 @@ class WeatherAppViewModel @Inject constructor(
     private val _errorMessage = mutableStateOf<String?>(null)
     val errorMessage: State<String?> = _errorMessage
 
-
     fun onQueryChanged(newQuery: String) {
         _query.value = newQuery
     }
@@ -64,10 +69,28 @@ class WeatherAppViewModel @Inject constructor(
     val selectedCity: State<String?> = _selectedCity
 
 
+    val isOnline: StateFlow<Boolean> = networkStatusTracker.networkStatus
+        .map { status ->
+            status == NetworkStatus.ONLINE
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
+
+
+
+//    init {
+//        // wait for 10 seconds before fetching the weather data for nairobi if online
+//        viewModelScope.launch {
+//            isOnline.collect { online ->
+//                if (online) {
+//                    delay(10000)
+//                    searchCity("Nairobi")
+//                }
+//            }
+//        }
+//    }
     private fun searchCity(city: String) {
         _selectedCity.value = city
 
-        Log.i(TAG, "Searching for city: $city")
 
         viewModelScope.launch {
             fetchCityWeather(city)
