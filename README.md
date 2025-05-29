@@ -97,9 +97,82 @@ OPENWEATHER_API_KEY=YOUR_API_KEY
 
 MIT License. Feel free to fork, modify, and share.
 
+
+## 🤝 Contributing to WeatherApp ☀️🌧️
+
+Welcome! 👋 Thank you for taking the time to contribute to WeatherApp — a modern Android weather app with offline support and a clean UI. Your help is invaluable in improving the experience for users across the world.
+
 ---
 
-## 🤝 Contributing
+## 🛠️ How to Contribute
 
-Pull requests are welcome! If you find a bug or want to add features, please open an issue.
+1. **Fork** the repository  
+2. **Create a feature branch** from `main`  
+   ```bash
+   git checkout -b feature/my-feature
+
+3. **Make your changes** and commit them with clear, descriptive messages
+
+   ```bash
+   git commit -m "Add: Improved offline fallback with shared prefs"
+   ```
+
+4. **Push to your fork** and open a Pull Request
+
+   ```bash
+   git push origin feature/my-feature
+   ```
+
+5. **Describe your pull request** – what it adds or fixes, and reference any related issue.
+
+---
+
+## 📋 Good First Issues
+
+Not sure where to start? Try one of these:
+
+* 📝 Improve documentation (README, comments, etc.)
+* 🎨 Improve UI on tablets or landscape orientation
+* ⚠️ Enhance error or network fallback messages
+* 🔍 Add tests (unit or UI)
+* ♻️ Refactor view models or composables for clarity
+
+Check the [Issues](https://github.com/morarafrank/WeatherApp/issues) page for open tasks.
+
+---
+
+## ✅ Code Guidelines
+
+* Use [Kotlin best practices](https://developer.android.com/kotlin/style-guide)
+* Follow the existing architecture (MVVM + Clean Architecture)
+* Test both online and offline behavior
+* Ensure builds pass and app runs successfully
+* Use `StateFlow`, Jetpack Compose patterns, and avoid tightly coupling UI with logic
+
+---
+
+## 📦 Project Stack
+
+* Android + Kotlin
+* Jetpack Compose
+* Retrofit + Room
+* StateFlow + ViewModel
+* OpenWeather API
+
+---
+
+## 🧪 Running Locally
+
+1. Add your `OPENWEATHER_API_KEY` in `local.properties`
+2. Build and run via Android Studio
+3. Test on multiple screen sizes/emulators if possible
+
+---
+
+## 🙋 Need Help?
+
+Open an issue or reach out by tagging `@morarafrank` on GitHub.
+
+Let’s make WeatherApp more robust, beautiful, and helpful — together! ☁️🤝
+
 ```
