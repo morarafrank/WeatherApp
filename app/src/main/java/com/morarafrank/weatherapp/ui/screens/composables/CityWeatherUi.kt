@@ -35,9 +35,7 @@ fun CityWeatherUi(
     ) {
 
         Text(
-            text = weatherData
-                ?.name
-                .toString(),
+            text = "${weatherData?.name}, ${weatherData?.sys?.country}",
             style = MaterialTheme.typography.bodyLarge
         )
 
