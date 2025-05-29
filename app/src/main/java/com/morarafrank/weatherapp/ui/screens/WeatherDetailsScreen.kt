@@ -1,5 +1,7 @@
 package com.morarafrank.weatherapp.ui.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,15 +16,18 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,6 +41,7 @@ import com.morarafrank.weatherapp.ui.screens.composables.CityWeatherUi
 import com.morarafrank.weatherapp.ui.screens.composables.EmptyForecastUi
 import com.morarafrank.weatherapp.ui.screens.composables.ForecastUi
 import com.morarafrank.weatherapp.ui.state.ForecastUiState
+import com.morarafrank.weatherapp.ui.state.NetworkStatusTracker
 import com.morarafrank.weatherapp.ui.state.WeatherUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,6 +56,27 @@ fun WeatherDetailsScreen(
 
     val weatherData = viewModel.weatherData.value
     val forecastData by viewModel.fiveDayForecast.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+    val isOnline by viewModel.isOnline.collectAsStateWithLifecycle()
+
+    LaunchedEffect(isOnline) {
+        if (!isOnline) {
+            Toast
+                .makeText(
+                context,
+                "You're offline. Showing cached data...",
+                Toast.LENGTH_LONG
+            ).show()
+
+//            if (weatherData == null || forecastData.isEmpty()) {
+//                viewModel.refreshData()
+//            }
+
+        }
+    }
+
+
 
     var showSearch by remember { mutableStateOf(false) }
 
