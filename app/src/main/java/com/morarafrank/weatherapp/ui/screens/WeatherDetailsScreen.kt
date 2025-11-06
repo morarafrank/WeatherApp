@@ -88,7 +88,7 @@ fun WeatherDetailsScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "WeatherApp",
+                            "Wethr",
                         )
                     },
                     actions = {
