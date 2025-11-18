@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.morarafrank.weatherapp.R
+import com.morarafrank.merchants.R
 
 @Composable
 fun EmptyForecastUi(

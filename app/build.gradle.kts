@@ -17,14 +17,14 @@ val apiKey: String = project.rootProject.file("local.properties")
     .getProperty("OPENWEATHER_API_KEY") ?: ""
 
 android {
-    namespace = "com.morarafrank.weatherapp"
+    namespace = "com.morarafrank.merchants"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.morarafrank.weatherapp"
+        applicationId = "com.morarafrank.merchants"
         minSdk = 24
         targetSdk = 35
-        versionCode = 6
+        versionCode = 22
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

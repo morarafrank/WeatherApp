@@ -28,10 +28,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.morarafrank.weatherapp.R
+import com.morarafrank.merchants.R
 import com.morarafrank.weatherapp.ui.WeatherAppViewModel
 import com.morarafrank.weatherapp.ui.screens.composables.CitySearchUi
 import com.morarafrank.weatherapp.ui.screens.composables.CityWeatherErrorUi
@@ -43,6 +44,7 @@ import com.morarafrank.weatherapp.ui.screens.composables.ForecastUi
 import com.morarafrank.weatherapp.ui.state.ForecastUiState
 import com.morarafrank.weatherapp.ui.state.NetworkStatusTracker
 import com.morarafrank.weatherapp.ui.state.WeatherUiState
+import com.morarafrank.weatherapp.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,7 +90,8 @@ fun WeatherDetailsScreen(
                 TopAppBar(
                     title = {
                         Text(
-                            "Wethr",
+                            stringResource(R.string.app_name),
+                            style = Typography.bodyLarge
                         )
                     },
                     actions = {

@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import com.morarafrank.weatherapp.R
+import com.morarafrank.merchants.R
 
 private val DarkColorScheme = darkColorScheme(
     primary = Blue,
