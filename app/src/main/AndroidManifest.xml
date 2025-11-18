@@ -7,17 +7,17 @@
 
     <application
         android:allowBackup="true"
-        android:name=".WeatherApp"
+        android:name="com.morarafrank.weatherapp.WeatherApp"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/merchants"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/ic_launcher"
+        android:roundIcon="@drawable/merchants"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.morarafrank.weatherapp.ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.WeatherApp">
