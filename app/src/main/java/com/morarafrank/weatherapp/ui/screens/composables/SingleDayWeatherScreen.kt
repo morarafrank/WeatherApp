@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.morarafrank.weatherapp.R
+import com.morarafrank.merchants.R
 import com.morarafrank.weatherapp.domain.model.WeatherResponse
 import com.morarafrank.weatherapp.ui.WeatherAppViewModel
 import com.morarafrank.weatherapp.utils.UiUtils

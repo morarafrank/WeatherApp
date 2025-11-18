@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.morarafrank.weatherapp.R
+import com.morarafrank.merchants.R
 
 val fontFamily = FontFamily(
     Font(R.font.dm_sans_regular),
@@ -33,7 +33,7 @@ val Typography = Typography(
     bodyMedium = TextStyle(
         fontFamily = mediumFont,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.25.sp
     ),

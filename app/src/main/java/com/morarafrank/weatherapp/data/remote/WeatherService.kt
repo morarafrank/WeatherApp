@@ -1,6 +1,6 @@
 package com.morarafrank.weatherapp.data.remote
 
-import com.morarafrank.weatherapp.BuildConfig
+import com.morarafrank.merchants.BuildConfig
 import com.morarafrank.weatherapp.domain.model.ForecastResponse
 import com.morarafrank.weatherapp.domain.model.WeatherResponse
 import retrofit2.http.GET

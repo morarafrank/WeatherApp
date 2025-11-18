@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.morarafrank.weatherapp.R
+import com.morarafrank.merchants.R
 import com.morarafrank.weatherapp.domain.model.WeatherResponse
 import com.morarafrank.weatherapp.utils.UiUtils
 
